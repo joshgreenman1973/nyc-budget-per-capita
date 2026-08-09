@@ -30,6 +30,10 @@ curl -fsSL -o co-est2020int-pop-36.xlsx \
 curl -fsSL -o co-est2025-alldata.csv \
   https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/counties/totals/co-est2025-alldata.csv
 
+echo "== Bureau of Economic Analysis county GDP =="
+curl -fsSL -o CAGDP1.zip https://apps.bea.gov/regional/zip/CAGDP1.zip
+unzip -o -q CAGDP1.zip -d cagdp1
+
 echo "== Bureau of Labor Statistics consumer price index =="
 # BLS blocks requests without a descriptive user agent.
 curl -fsSL -A "$UA" -o cu.data.1.AllItems.txt \
@@ -43,4 +47,5 @@ echo
 echo "done. now run:"
 echo "  python3 scripts/extract_acfr.py"
 echo "  python3 scripts/extract_omb.py"
+echo "  python3 scripts/extract_gdp.py"
 echo "  python3 scripts/build_series.py"

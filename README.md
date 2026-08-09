@@ -18,6 +18,7 @@ adjusted for inflation.
 | Revenue by source, including the federal and state split | 2000–2025 | General Fund revenue schedule |
 | Bonds issued, premium and refunding | 2000–2025 | Governmental funds statement |
 | Expense budget | 2026–2027 | Office of Management and Budget, adopted budget for fiscal 2027 |
+| City GDP (denominator) | 2002–2024 | Bureau of Economic Analysis county series, five boroughs, current dollars |
 
 Fiscal years 2026 and 2027 are budgeted rather than audited and sit on the budget
 basis, which covers operations and debt service but not capital. They are drawn
@@ -25,9 +26,10 @@ hatched, behind a divider, and are never blended into the audited series.
 
 ## How it is built
 
-    ./scripts/fetch_sources.sh          # ~60 MB of source documents, not committed
+    ./scripts/fetch_sources.sh          # ~75 MB of source documents, not committed
     python3 scripts/extract_acfr.py     # PDF tables  -> data/out/acfr_raw.csv
     python3 scripts/extract_omb.py      # budget      -> data/out/omb_budget.json
+    python3 scripts/extract_gdp.py      # BEA GDP     -> data/out/gdp.json
     python3 scripts/build_series.py     # reconcile   -> data.json + the CSV
 
 Requires `pymupdf` and `openpyxl`.

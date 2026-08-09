@@ -46,8 +46,8 @@ OPERATING = [
     ("social_services", "Social services", ["total social services"]),
     ("public_safety", "Police, fire, courts and jails",
      ["total public safety and judicial"]),
-    ("pensions", "Pensions", ["pension contributions"]),
-    ("fringe_benefits", "Health insurance and other fringe benefits",
+    ("pensions", "Pension contributions", ["pension contributions"]),
+    ("fringe_benefits", "Health insurance and other benefits",
      ["fringe benefits and other benefit payments", "benefit payments"]),
     ("health", "Health and hospitals", ["total health"]),
     ("environmental", "Sanitation, water and sewers",
@@ -415,6 +415,11 @@ def build():
             print("  " + p)
         sys.exit(1)
 
+    gdp_path = os.path.join(OUT, "gdp.json")
+    gdp = {}
+    if os.path.exists(gdp_path):
+        gdp = {int(k): v for k, v in json.load(open(gdp_path))["fiscal"].items()}
+
     pop = load_population()
     fpop = fiscal_population(pop)
     cpi = load_cpi()
@@ -426,6 +431,9 @@ def build():
             "last_fy": LAST_FY,
             "dollar_base_fy": LAST_FY,
             "cpi_series": "CUURS12ASA0",
+            "gdp_source": "BEA CAGDP1, current-dollar GDP, five counties",
+            "gdp_first_fy": min(gdp) if gdp else None,
+            "gdp_last_fy": max(gdp) if gdp else None,
             "generated_from": ["ACFR FY2005", "ACFR FY2015", "ACFR FY2025"],
         },
         "labels": {
@@ -443,6 +451,7 @@ def build():
             "fy": y,
             "population": round(fpop[y]),
             "cpi": round(cpi[y], 4),
+            "gdp": round(gdp[y]) if y in gdp else None,
             "deflator": round(base / cpi[y], 6),
             "operating": s["operating"],
             "debt_service": s["debt_service"],

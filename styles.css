@@ -224,6 +224,32 @@ main { counter-reset: sec; }
 }
 .swatch { width: 10px; height: 10px; flex: none; box-shadow: 0 0 0 1px var(--rule-ink) inset; }
 
+
+/* ---------- chart controls, clickable legend ---------- */
+.chart-controls { display: flex; flex-wrap: wrap; gap: 10px 14px; margin: 0 0 18px; }
+
+.legend-item { border: 0; background: none; font: inherit; }
+button.legend-item {
+  cursor: pointer; padding: 2px 6px 2px 2px; margin: -2px 0;
+  border-radius: 2px; text-align: left;
+}
+button.legend-item:hover { background: var(--paper-2); color: var(--ink); }
+button.legend-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+button.legend-item[aria-pressed="true"] {
+  background: var(--ink); color: var(--surface-1);
+}
+.legend-item.is-off { opacity: 0.42; }
+.legend-clear {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); background: none;
+  border: 0; border-bottom: 1px solid var(--accent); cursor: pointer;
+  padding: 0 0 1px;
+}
+.hint {
+  margin: 9px 0 0; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.02em; color: var(--muted);
+}
+
 /* ---------- greenbar tables ---------- */
 .tablewrap { margin-top: 16px; overflow-x: auto; }
 table { border-collapse: collapse; font-size: 12px; min-width: 100%; }

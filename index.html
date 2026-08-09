@@ -69,9 +69,15 @@
     <h2>What it spends it on</h2>
     <p class="dek">The same money, grouped by what it buys. Switch between the operating
       budget and the capital program — they buy very different things.</p>
-    <div class="seg seg-wide" role="group" aria-label="Operating or capital">
-      <button type="button" class="seg-btn is-on" data-mode="operating">Operating</button>
-      <button type="button" class="seg-btn" data-mode="capital">Capital</button>
+    <div class="chart-controls">
+      <div class="seg" role="group" aria-label="Operating or capital">
+        <button type="button" class="seg-btn is-on" data-mode="operating">Operating</button>
+        <button type="button" class="seg-btn" data-mode="capital">Capital</button>
+      </div>
+      <div class="seg" role="group" aria-label="Amounts or shares">
+        <button type="button" class="seg-btn is-on" data-share="0" data-share-for="c2">Amounts</button>
+        <button type="button" class="seg-btn" data-share="1" data-share-for="c2">Share of total</button>
+      </div>
     </div>
     <figure class="chart-card">
       <figcaption class="chart-head">
@@ -80,6 +86,7 @@
       </figcaption>
       <div class="chart" id="c2"></div>
       <div class="legend" id="c2Legend"></div>
+      <p class="hint" id="c2Hint"></p>
       <div class="tablewrap" id="c2Table" hidden></div>
     </figure>
     <p class="note" id="c2Note"></p>
@@ -107,6 +114,12 @@
     <h2>Where the money comes from</h2>
     <p class="dek">The revenue side of the same ledger: the tax mix, plus aid from Albany
       and Washington.</p>
+    <div class="chart-controls">
+      <div class="seg" role="group" aria-label="Amounts or shares">
+        <button type="button" class="seg-btn is-on" data-share="0" data-share-for="c4">Amounts</button>
+        <button type="button" class="seg-btn" data-share="1" data-share-for="c4">Share of total</button>
+      </div>
+    </div>
     <figure class="chart-card">
       <figcaption class="chart-head">
         <span class="chart-title" id="c4Title"></span>
@@ -114,8 +127,32 @@
       </figcaption>
       <div class="chart" id="c4"></div>
       <div class="legend" id="c4Legend"></div>
+      <p class="hint" id="c4Hint"></p>
       <div class="tablewrap" id="c4Table" hidden></div>
     </figure>
+  </section>
+
+  <section class="block" id="gdp">
+    <h2>Set against the size of the economy</h2>
+    <p class="dek">Spending grows; so does the city. This is everything the city
+      spends measured against gross domestic product for the five boroughs, which
+      is what the local economy actually produced that year.</p>
+    <figure class="chart-card">
+      <figcaption class="chart-head">
+        <span class="chart-title" id="c5Title"></span>
+        <button type="button" class="table-btn" data-table="c5">Table</button>
+      </figcaption>
+      <div class="chart" id="c5"></div>
+      <div class="legend" id="c5Legend"></div>
+      <div class="tablewrap" id="c5Table" hidden></div>
+    </figure>
+    <p class="note">Gross domestic product is the Bureau of Economic Analysis
+      county series, summed across the five boroughs, in current dollars. A city
+      fiscal year straddles two calendar years, so each one is measured against the
+      average of the two it spans. Both sides of the ratio are in the same year's
+      dollars, so the inflation and per-person toggles do not change it. The series
+      starts in fiscal 2002 because the county accounts begin in 2001, and stops at
+      fiscal 2024 because calendar 2025 has not been measured yet.</p>
   </section>
 
   <section class="block" id="methodology">
@@ -134,6 +171,34 @@
         Capital Projects Fund expenditures schedule. <strong>Revenue</strong> is the
         General Fund revenues schedule, which is the only one that separates federal
         from state aid.</p>
+
+      <p><strong>Where pensions and retiree health care live.</strong> Pension
+        contributions are their own category. The city budgets them centrally, so
+        the line covers all five retirement systems, including teachers — which
+        means the education category is salaries and operations, not teacher
+        pensions. Retiree health care has no line of its own in the fund
+        statements: the city pays it as it goes, inside health insurance and other
+        benefits, and discloses the amount in the notes — about $4.1 billion in
+        fiscal 2025, up from $3.2 billion a year earlier. The two categories
+        together are the cost of past and present labor beyond wages: about $18.6
+        billion in fiscal 2025, or 16 cents of every operating dollar.</p>
+
+      <p><strong>One caution on the totals.</strong> Total spending here is
+        operations plus debt service plus capital construction — a gross cash
+        view. Debt service is mostly the financing of past capital projects, so
+        the total counts this year's construction and the payments on earlier
+        construction in the same figure. That is the standard way to present a
+        city's full footprint, but it is not the figure to use for questions like
+        &#8220;what does a year of city government cost,&#8221; where you would
+        take either capital or debt service, not both.</p>
+
+      <p><strong>Why revenues and spending do not quite match.</strong> The
+        city's budget must balance, and in most years General Fund revenues and
+        uses differ by only a few million dollars after the roll of each year's
+        surplus. Fiscal 2021 and 2022 are the visible exceptions: the city banked
+        surpluses into its rainy-day fund, so revenues exceed spending by up to
+        $1.3 billion in those years. That gap is in the audited statements, not
+        an extraction error.</p>
 
       <p><strong>Every category is a line the Comptroller publishes.</strong> Nothing is
         estimated, modelled or allocated. The only arithmetic is addition, and every sum
