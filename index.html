@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The New York City ledger: what the city spends and where the money comes from</title>
+<meta name="description" content="Twenty-six years of audited New York City spending and revenue, by category, with toggles for population and inflation. Built from the Comptroller's annual financial reports.">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128209;</text></svg>">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">New York City · fiscal years 2000 to 2027</p>
+    <h1>The New York City ledger</h1>
+    <p class="standfirst">What the city spends, what it spends it on and where the money
+      comes from — every year since fiscal year 2000, from the audited books.</p>
+  </div>
+</header>
+
+<div class="controls" id="controls">
+  <div class="wrap controls-inner">
+    <div class="toggle-group">
+      <span class="toggle-label">Show</span>
+      <div class="seg" role="group" aria-label="Total or per person">
+        <button type="button" class="seg-btn is-on" data-percap="0">Totals</button>
+        <button type="button" class="seg-btn" data-percap="1">Per person</button>
+      </div>
+    </div>
+    <div class="toggle-group">
+      <span class="toggle-label">Dollars</span>
+      <div class="seg" role="group" aria-label="Inflation adjustment">
+        <button type="button" class="seg-btn is-on" data-real="1">Adjusted for inflation</button>
+        <button type="button" class="seg-btn" data-real="0">Not adjusted</button>
+      </div>
+    </div>
+    <p class="controls-note" id="basisNote"></p>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="stats" id="heroStats" aria-label="Headline figures"></section>
+
+  <section class="block" id="spending">
+    <h2>What the city spends</h2>
+    <p class="dek">Everything the city spent each year, split three ways: day-to-day
+      operations, debt service on money already borrowed and capital construction.
+      Fiscal years run July through June.</p>
+    <figure class="chart-card">
+      <figcaption class="chart-head">
+        <span class="chart-title" id="c1Title"></span>
+        <button type="button" class="table-btn" data-table="c1">Table</button>
+      </figcaption>
+      <div class="chart" id="c1"></div>
+      <div class="legend" id="c1Legend"></div>
+      <div class="tablewrap" id="c1Table" hidden></div>
+    </figure>
+    <p class="note">Fiscal years 2026 and 2027 are budgeted rather than audited, and are
+      drawn with hatching. They come from the Office of Management and Budget, whose
+      expense budget covers operations and debt service but not capital construction, so
+      those two bars are shorter by construction than the audited bars beside them. On
+      the like-for-like measure of operations plus debt service, the city spent $117.7
+      billion in fiscal 2025 and has budgeted $126.2 billion for fiscal 2027.</p>
+  </section>
+
+  <section class="block" id="categories">
+    <h2>What it spends it on</h2>
+    <p class="dek">The same money, grouped by what it buys. Switch between the operating
+      budget and the capital program — they buy very different things.</p>
+    <div class="seg seg-wide" role="group" aria-label="Operating or capital">
+      <button type="button" class="seg-btn is-on" data-mode="operating">Operating</button>
+      <button type="button" class="seg-btn" data-mode="capital">Capital</button>
+    </div>
+    <figure class="chart-card">
+      <figcaption class="chart-head">
+        <span class="chart-title" id="c2Title"></span>
+        <button type="button" class="table-btn" data-table="c2">Table</button>
+      </figcaption>
+      <div class="chart" id="c2"></div>
+      <div class="legend" id="c2Legend"></div>
+      <div class="tablewrap" id="c2Table" hidden></div>
+    </figure>
+    <p class="note" id="c2Note"></p>
+  </section>
+
+  <section class="block" id="borrowing">
+    <h2>How the building gets paid for</h2>
+    <p class="dek">Capital work is financed mostly by borrowing. This is what the city
+      issued in bonds each year, next to what it actually spent on construction and the
+      federal and state aid that helped cover it.</p>
+    <figure class="chart-card">
+      <figcaption class="chart-head">
+        <span class="chart-title" id="c3Title"></span>
+        <button type="button" class="table-btn" data-table="c3">Table</button>
+      </figcaption>
+      <div class="chart" id="c3"></div>
+      <div class="legend" id="c3Legend"></div>
+      <div class="tablewrap" id="c3Table" hidden></div>
+    </figure>
+    <p class="note">Refunding bonds, which refinance existing debt rather than raise new
+      money, are excluded. Bond premium is included in proceeds.</p>
+  </section>
+
+  <section class="block" id="revenue">
+    <h2>Where the money comes from</h2>
+    <p class="dek">The revenue side of the same ledger: the tax mix, plus aid from Albany
+      and Washington.</p>
+    <figure class="chart-card">
+      <figcaption class="chart-head">
+        <span class="chart-title" id="c4Title"></span>
+        <button type="button" class="table-btn" data-table="c4">Table</button>
+      </figcaption>
+      <div class="chart" id="c4"></div>
+      <div class="legend" id="c4Legend"></div>
+      <div class="tablewrap" id="c4Table" hidden></div>
+    </figure>
+  </section>
+
+  <section class="block" id="methodology">
+    <h2>Where these numbers come from</h2>
+    <div class="method">
+      <p><strong>The books, not the budget.</strong> Fiscal years 2000 through 2025 are
+        audited actuals from the New York City Comptroller's Annual Comprehensive
+        Financial Report, the city's audited annual accounts. Each report's statistical
+        section carries ten-year trend schedules, so three reports — fiscal 2005,
+        fiscal 2015 and fiscal 2025 — cover the full period without gaps.</p>
+
+      <p><strong>Operating spending</strong> is the General Fund, the city's operating
+        budget, taken from the schedule of General Fund expenditures by agency and
+        totalled by function. <strong>Debt service</strong> is the General Fund's
+        transfers to the debt service funds. <strong>Capital spending</strong> is the
+        Capital Projects Fund expenditures schedule. <strong>Revenue</strong> is the
+        General Fund revenues schedule, which is the only one that separates federal
+        from state aid.</p>
+
+      <p><strong>Every category is a line the Comptroller publishes.</strong> Nothing is
+        estimated, modelled or allocated. The only arithmetic is addition, and every sum
+        is checked against the report's own printed total for that year; the build fails
+        if any year is off by more than a thousand dollars. Categories shown as
+        "all other" are named individually in the downloadable data.</p>
+
+      <p><strong>Population</strong> is Census Bureau county estimates for the five
+        boroughs, using the decennial-anchored series — intercensal estimates for
+        2000 to 2010 and 2010 to 2020 and Vintage 2025 estimates thereafter — so
+        the joins fall on census years. City fiscal years end June 30 and Census
+        estimates are dated July 1, so each fiscal year uses the estimate dated one day
+        after it closed. <strong>Inflation</strong> uses the Bureau of Labor Statistics
+        consumer price index for all urban consumers in the New York, Newark and Jersey
+        City metropolitan area, averaged over the twelve months of each fiscal year.
+        Adjusted figures are in fiscal 2025 dollars.</p>
+
+      <p><strong>Why the series starts in fiscal 2000.</strong> The Comptroller's
+        schedules reach back to fiscal 1996, but before fiscal 2000 the governmental
+        funds statements reported capital spending on its own line instead of inside
+        each function, so the categories are not comparable across that break. The
+        Census Bureau also no longer publishes the 1990s county estimates needed for a
+        seamless population denominator.</p>
+
+      <p><strong>The last two years are budgeted, not audited.</strong> Fiscal 2026
+        closed on June 30, 2026 and its audited report is not published until the
+        autumn; fiscal 2027 is a plan. Both come from the Office of Management and
+        Budget's adopted budget for fiscal 2027 — fiscal 2026 as modified, fiscal
+        2027 as adopted. The budget basis nets out intra-city transactions and counts
+        capital budget transfers, so it does not tie line for line to the audited
+        series. Per-person figures for those two years reuse the 2025 population,
+        because no later Census estimate has been published.</p>
+
+      <h3>What was checked against other sources</h3>
+      <ul class="checks">
+        <li><strong>The Comptroller's own release</strong> on the fiscal 2025 report
+          states General Fund revenues of $117.660 billion and expenditures of $117.690
+          billion. These figures reproduce both exactly, along with the stated
+          year-over-year changes in total revenue ($4.845 billion), total expenditure
+          ($4.717 billion), tax revenue ($6.139 billion) and state categorical grants
+          ($791 million).</li>
+        <li><strong>The Independent Budget Office's</strong> published revenue and
+          spending summary agrees on total taxes, state categorical aid, federal
+          categorical aid, total revenues and total expenditures for every one of the
+          twenty-one overlapping years from fiscal 2000 to fiscal 2019, to the dollar
+          within its rounding.</li>
+        <li><strong>A fourth annual report</strong> — fiscal 2016, which was not
+          used to build the series — was extracted independently and compared on
+          thirty measures across fiscal 2007 to fiscal 2016. All thirty matched, which
+          also confirms the city does not restate these schedules.</li>
+      </ul>
+
+      <h3>Discrepancies found, and what they turned out to be</h3>
+      <ul class="checks">
+        <li><strong>Federal aid, fiscal 2025.</strong> The Comptroller's release reports
+          federal categorical aid falling $2.153 billion; the revenue schedule shows
+          $2.211 billion. A footnote resolves it: the narrative figure folds in federal
+          debt service financing sources, which the revenue schedule reports elsewhere.
+          The $58 million gap is that item.</li>
+        <li><strong>Fiscal 2020 and the Independent Budget Office.</strong> The office's
+          summary ends at fiscal 2020 and its final column is roughly $700 million below
+          the audited result. The fiscal 2020 annual report itself gives $95.058 billion
+          in revenues, matching the figures used here, so that last column appears to be
+          a pre-audit estimate.</li>
+        <li><strong>A bad memo line.</strong> The fiscal 2025 report's governmental funds
+          table carries a "less capital outlays" line showing $22.3 billion
+          for fiscal 2022 and $30.3 billion for fiscal 2023 — two to three times
+          the capital expenditure schedule's $10.5 billion and $12.1 billion for the same
+          years, and far out of line with every year around them. The detailed schedule,
+          which reconciles to its own printed total, is used here.</li>
+        <li><strong>The Citizens Budget Commission</strong> could not be checked
+          directly: its site blocks automated access. Its published growth rates are in
+          any case city-funded budgeted spending, a different measure from audited
+          all-funds actuals, and would not be expected to tie.</li>
+      </ul>
+
+      <h3>Get the data</h3>
+      <p class="downloads">
+        <a href="nyc-budget-fy2000-fy2025.csv" download>Full series, comma-separated (all categories, all years)</a>
+        <a href="data.json" download>Site data, JSON</a>
+        <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller's annual reports</a>
+        <a href="https://github.com/joshgreenman1973/nyc-budget-per-capita">Extraction and build code</a>
+      </p>
+      <p class="aicaution">Built with AI assistance. The figures are machine-extracted
+        from the published reports and reconciled to their printed totals, but check
+        anything you intend to rely on against the source documents.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Sources: New York City Comptroller, Annual Comprehensive Financial Reports for
+      fiscal 2005, 2015, 2016, 2020 and 2025 · New York City Office of Management
+      and Budget, Adopted Budget for fiscal 2027 · United States Census Bureau,
+      county population estimates · Bureau of Labor Statistics, consumer price
+      index for the New York metropolitan area.</p>
+  </div>
+</footer>
+
+<div class="tooltip" id="tooltip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

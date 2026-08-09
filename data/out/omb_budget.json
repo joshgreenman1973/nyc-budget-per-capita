@@ -1,0 +1,57 @@
+{
+ "city_funds": {
+  "fy2026_adopted": 87526848966,
+  "fy2026_modified": 94221248628,
+  "fy2027_adopted": 96096295966
+ },
+ "city_funds_and_capital_transfers": {
+  "fy2026_adopted": 89456582513,
+  "fy2026_modified": 96277687260,
+  "fy2027_adopted": 98055261821
+ },
+ "debt_service": {
+  "fy2026_adopted": 4874454475,
+  "fy2026_modified": 6482533902,
+  "fy2027_adopted": 7368393796
+ },
+ "federal_categorical": {
+  "fy2026_adopted": 7470351621,
+  "fy2026_modified": 9862312202,
+  "fy2027_adopted": 7373607280
+ },
+ "net_total_expense": {
+  "fy2026_adopted": 115907309727,
+  "fy2026_modified": 126810081450,
+  "fy2027_adopted": 126241596044
+ },
+ "other_categorical": {
+  "fy2026_adopted": 1125051431,
+  "fy2026_modified": 1256138160,
+  "fy2027_adopted": 1138091498
+ },
+ "other_taxes": {
+  "fy2026_adopted": 46161947000,
+  "fy2026_modified": 50212497000,
+  "fy2027_adopted": 51415947000
+ },
+ "other_than_personal_service": {
+  "fy2026_adopted": 52907367552,
+  "fy2026_modified": 62526203415,
+  "fy2027_adopted": 60305513342
+ },
+ "personal_service": {
+  "fy2026_adopted": 60009651649,
+  "fy2026_modified": 60220081819,
+  "fy2027_adopted": 60751987973
+ },
+ "property_tax": {
+  "fy2026_adopted": 35161000000,
+  "fy2026_modified": 35386000000,
+  "fy2027_adopted": 37190000000
+ },
+ "state_categorical": {
+  "fy2026_adopted": 18980375593,
+  "fy2026_modified": 20670081988,
+  "fy2027_adopted": 20812726943
+ }
+}
