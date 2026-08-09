@@ -49,9 +49,11 @@ A mismatch of more than a thousand dollars fails the build rather than warning.
   reproduce both exactly, plus the stated year-over-year changes in total revenue
   ($4.845 billion), total expenditure ($4.717 billion), tax revenue ($6.139
   billion) and state categorical grants ($791 million).
-* The Independent Budget Office's revenue and spending summary agrees on total
-  taxes, state aid, federal aid, total revenues and total expenditures for all 21
-  overlapping years, fiscal 2000 through 2019, within its $1 million rounding.
+* The Independent Budget Office's revenue and spending summary overlaps for 21
+  years, fiscal 2000 through 2020. Total taxes, state aid and federal aid agree in
+  all 21 within its $1 million rounding; total revenues and total expenditures
+  agree in 20, the exception being fiscal 2020, whose final column appears to be a
+  pre-audit estimate.
 * The fiscal 2016 report, which is not used to build the series, was extracted
   independently and matched on 30 measures across fiscal 2007 to 2016. That also
   confirms the city does not restate these schedules.
