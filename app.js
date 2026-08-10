@@ -869,7 +869,7 @@
     });
   }
 
-  fetch("data.json")
+  fetch("data.json?v=20260809c")
     .then(function (r) {
       if (!r.ok) throw new Error("data.json " + r.status);
       return r.json();

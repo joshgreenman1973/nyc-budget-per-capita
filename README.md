@@ -42,6 +42,10 @@ behind a divider, and are never blended into the audited series.
     python3 scripts/extract_gdp.py      # BEA GDP     -> data/out/gdp.json
     python3 scripts/build_series.py     # reconcile   -> data.json + the CSV
 
+When deploying, bump the `?v=` stamp on the asset links in index.html (and the
+data.json fetch in app.js) so cached copies of one file are never paired with
+fresh copies of another.
+
 Requires `pymupdf` and `openpyxl`.
 
 `extract_acfr.py` reads the ten-year trend schedules out of the Comptroller's
