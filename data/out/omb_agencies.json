@@ -1,0 +1,707 @@
+{
+ "002": {
+  "fy2026_modified": 179606425,
+  "fy2027_adopted": 191395766,
+  "name": "MAYORALTY"
+ },
+ "003": {
+  "fy2026_modified": 273814343,
+  "fy2027_adopted": 212330829,
+  "name": "BOARD OF ELECTIONS"
+ },
+ "004": {
+  "fy2026_modified": 102381237,
+  "fy2027_adopted": 104408742,
+  "name": "CAMPAIGN FINANCE BOARD"
+ },
+ "008": {
+  "fy2026_modified": 7431867,
+  "fy2027_adopted": 8483139,
+  "name": "OFFICE OF THE ACTUARY"
+ },
+ "010": {
+  "fy2026_modified": 6322852,
+  "fy2027_adopted": 6079019,
+  "name": "BOROUGH PRESIDENT - MANHATTAN"
+ },
+ "011": {
+  "fy2026_modified": 7285672,
+  "fy2027_adopted": 7214568,
+  "name": "BOROUGH PRESIDENT BRONX"
+ },
+ "012": {
+  "fy2026_modified": 8121583,
+  "fy2027_adopted": 7884159,
+  "name": "BOROUGH PRESIDENT - BROOKLYN"
+ },
+ "013": {
+  "fy2026_modified": 8158691,
+  "fy2027_adopted": 6773772,
+  "name": "BOROUGH PRESIDENT - QUEENS"
+ },
+ "014": {
+  "fy2026_modified": 5544393,
+  "fy2027_adopted": 5247332,
+  "name": "BOROUGH PRESIDENT STATEN ISLAND"
+ },
+ "015": {
+  "fy2026_modified": 126340834,
+  "fy2027_adopted": 133421664,
+  "name": "OFFICE OF THE COMPTROLLER"
+ },
+ "017": {
+  "fy2026_modified": 85226847,
+  "fy2027_adopted": 47314837,
+  "name": "DEPARTMENT OF EMERGENCY MANAGEMENT"
+ },
+ "021": {
+  "fy2026_modified": 6071445,
+  "fy2027_adopted": 7845238,
+  "name": "OFFICE OF ADMINISTRATIVE TAX APPEALS"
+ },
+ "025": {
+  "fy2026_modified": 321386996,
+  "fy2027_adopted": 378517755,
+  "name": "LAW DEPARTMENT"
+ },
+ "030": {
+  "fy2026_modified": 51257179,
+  "fy2027_adopted": 58779229,
+  "name": "DEPARTMENT OF CITY PLANNING"
+ },
+ "032": {
+  "fy2026_modified": 58094491,
+  "fy2027_adopted": 54169003,
+  "name": "DEPARTMENT OF INVESTIGATION"
+ },
+ "035": {
+  "fy2026_modified": 38898862,
+  "fy2027_adopted": 39532947,
+  "name": "NEW YORK RESEARCH LIBRARIES"
+ },
+ "037": {
+  "fy2026_modified": 194176454,
+  "fy2027_adopted": 195918186,
+  "name": "NEW YORK PUBLIC LIBRARY"
+ },
+ "038": {
+  "fy2026_modified": 147260632,
+  "fy2027_adopted": 148458587,
+  "name": "BROOKLYN PUBLIC LIBRARY"
+ },
+ "039": {
+  "fy2026_modified": 153140708,
+  "fy2027_adopted": 154132707,
+  "name": "QUEENS BOROUGH PUBLIC LIBRARY"
+ },
+ "040": {
+  "fy2026_modified": 37597272326,
+  "fy2027_adopted": 38572732699,
+  "name": "DEPARTMENT OF EDUCATION"
+ },
+ "042": {
+  "fy2026_modified": 1472045590,
+  "fy2027_adopted": 1568048214,
+  "name": "CITY UNIVERSITY OF NEW YORK"
+ },
+ "054": {
+  "fy2026_modified": 29414058,
+  "fy2027_adopted": 32869874,
+  "name": "CIVILIAN COMPLAINT REVIEW BOARD"
+ },
+ "056": {
+  "fy2026_modified": 6621358432,
+  "fy2027_adopted": 6273335758,
+  "name": "POLICE DEPARTMENT"
+ },
+ "057": {
+  "fy2026_modified": 2841888039,
+  "fy2027_adopted": 2717015407,
+  "name": "FIRE DEPARTMENT"
+ },
+ "058": {
+  "fy2026_modified": 0,
+  "fy2027_adopted": 3078000,
+  "name": "OFFICE OF COMMUNITY SAFETY"
+ },
+ "063": {
+  "fy2026_modified": 6401684,
+  "fy2027_adopted": 7263420,
+  "name": "DEPARTMENT OF VETERANS' SERVICES"
+ },
+ "068": {
+  "fy2026_modified": 4424292452,
+  "fy2027_adopted": 3520528210,
+  "name": "ADMIN FOR CHILDREN'S SERVICES"
+ },
+ "069": {
+  "fy2026_modified": 14681016811,
+  "fy2027_adopted": 14986082299,
+  "name": "DEPARTMENT OF SOCIAL SERVICES"
+ },
+ "071": {
+  "fy2026_modified": 4472881588,
+  "fy2027_adopted": 4233018332,
+  "name": "DEPARTMENT OF HOMELESS SERVICES"
+ },
+ "072": {
+  "fy2026_modified": 1379500248,
+  "fy2027_adopted": 1263294081,
+  "name": "DEPARTMENT OF CORRECTION"
+ },
+ "073": {
+  "fy2026_modified": 3640519,
+  "fy2027_adopted": 3637881,
+  "name": "BOARD OF CORRECTION"
+ },
+ "095": {
+  "fy2026_modified": 9706817727,
+  "fy2027_adopted": 8707160878,
+  "name": "PENSION CONTRIBUTIONS"
+ },
+ "098": {
+  "fy2026_modified": 14433074390,
+  "fy2027_adopted": 15163622916,
+  "name": "MISCELLANEOUS"
+ },
+ "099": {
+  "fy2026_modified": 6482533902,
+  "fy2027_adopted": 7368393796,
+  "name": "DEBT SERVICE"
+ },
+ "101": {
+  "fy2026_modified": 5817025,
+  "fy2027_adopted": 6250447,
+  "name": "PUBLIC ADVOCATE"
+ },
+ "102": {
+  "fy2026_modified": 115049827,
+  "fy2027_adopted": 127061862,
+  "name": "CITY COUNCIL"
+ },
+ "103": {
+  "fy2026_modified": 8804849,
+  "fy2027_adopted": 7479961,
+  "name": "CITY CLERK"
+ },
+ "125": {
+  "fy2026_modified": 606205618,
+  "fy2027_adopted": 635281545,
+  "name": "DEPARTMENT FOR THE AGING"
+ },
+ "126": {
+  "fy2026_modified": 300007301,
+  "fy2027_adopted": 323796139,
+  "name": "DEPARTMENT OF CULTURAL AFFAIRS"
+ },
+ "127": {
+  "fy2026_modified": 126092503,
+  "fy2027_adopted": 125054479,
+  "name": "FINANCIAL INFORMATION SERVICE AGENCY"
+ },
+ "128": {
+  "fy2026_modified": 1049226184,
+  "fy2027_adopted": 942938589,
+  "name": "OFFICE OF CRIMINAL JUSTICE"
+ },
+ "131": {
+  "fy2026_modified": 18627945,
+  "fy2027_adopted": 17150942,
+  "name": "OFFICE OF PAYROLL ADMINISTRATION"
+ },
+ "132": {
+  "fy2026_modified": 8291018,
+  "fy2027_adopted": 8445874,
+  "name": "INDEPENDENT BUDGET OFFICE"
+ },
+ "133": {
+  "fy2026_modified": 1393927,
+  "fy2027_adopted": 1607246,
+  "name": "EQUAL EMPLOYMENT PRACTICES COMMISSION"
+ },
+ "134": {
+  "fy2026_modified": 1192853,
+  "fy2027_adopted": 1217197,
+  "name": "CIVIL SERVICE COMMISSION"
+ },
+ "136": {
+  "fy2026_modified": 8977824,
+  "fy2027_adopted": 8113711,
+  "name": "LANDMARKS PRESERVATION COMM."
+ },
+ "156": {
+  "fy2026_modified": 61806067,
+  "fy2027_adopted": 69723377,
+  "name": "NYC TAXI AND LIMOUSINE COMM"
+ },
+ "213": {
+  "fy2026_modified": 4994879,
+  "fy2027_adopted": 7212397,
+  "name": "OFFICE OF RACIAL EQUITY"
+ },
+ "215": {
+  "fy2026_modified": 4585741,
+  "fy2027_adopted": 7179741,
+  "name": "COMMISSION ON RACIAL EQUITY"
+ },
+ "226": {
+  "fy2026_modified": 12984882,
+  "fy2027_adopted": 14996984,
+  "name": "COMMISSION ON HUMAN RIGHTS"
+ },
+ "260": {
+  "fy2026_modified": 1519468871,
+  "fy2027_adopted": 1796208844,
+  "name": "DEPARTMENT OF YOUTH & COMMUNITY DEV"
+ },
+ "312": {
+  "fy2026_modified": 2860750,
+  "fy2027_adopted": 3009386,
+  "name": "CONFLICTS OF INTEREST BOARD"
+ },
+ "313": {
+  "fy2026_modified": 2787195,
+  "fy2027_adopted": 2825196,
+  "name": "OFFICE OF COLLECTIVE BARGAINING"
+ },
+ "341": {
+  "fy2026_modified": 471499,
+  "fy2027_adopted": 302305,
+  "name": "MANHATTAN COMMUNITY BOARD #1"
+ },
+ "342": {
+  "fy2026_modified": 479402,
+  "fy2027_adopted": 399132,
+  "name": "MANHATTAN COMMUNITY BOARD #2"
+ },
+ "343": {
+  "fy2026_modified": 463305,
+  "fy2027_adopted": 473207,
+  "name": "MANHATTAN COMMUNITY BOARD #3"
+ },
+ "344": {
+  "fy2026_modified": 449041,
+  "fy2027_adopted": 449041,
+  "name": "MANHATTAN COMMUNITY BOARD #4"
+ },
+ "345": {
+  "fy2026_modified": 418105,
+  "fy2027_adopted": 432970,
+  "name": "MANHATTAN COMMUNITY BOARD #5"
+ },
+ "346": {
+  "fy2026_modified": 627663,
+  "fy2027_adopted": 485081,
+  "name": "MANHATTAN COMMUNITY BOARD #6"
+ },
+ "347": {
+  "fy2026_modified": 476706,
+  "fy2027_adopted": 485944,
+  "name": "MANHATTAN COMMUNITY BOARD #7"
+ },
+ "348": {
+  "fy2026_modified": 473952,
+  "fy2027_adopted": 477314,
+  "name": "MANHATTAN COMMUNITY BOARD #8"
+ },
+ "349": {
+  "fy2026_modified": 452427,
+  "fy2027_adopted": 438352,
+  "name": "MANHATTAN COMMUNITY BOARD #9"
+ },
+ "350": {
+  "fy2026_modified": 514822,
+  "fy2027_adopted": 514822,
+  "name": "MANHATTAN COMMUNITY BOARD #10"
+ },
+ "351": {
+  "fy2026_modified": 410864,
+  "fy2027_adopted": 409946,
+  "name": "MANHATTAN COMMUNITY BOARD #11"
+ },
+ "352": {
+  "fy2026_modified": 450041,
+  "fy2027_adopted": 506489,
+  "name": "MANHATTAN COMMUNITY BOARD #12"
+ },
+ "381": {
+  "fy2026_modified": 366943,
+  "fy2027_adopted": 388771,
+  "name": "BRONX COMMUNITY BOARD #1"
+ },
+ "382": {
+  "fy2026_modified": 409815,
+  "fy2027_adopted": 415815,
+  "name": "BRONX COMMUNITY BOARD #2"
+ },
+ "383": {
+  "fy2026_modified": 340537,
+  "fy2027_adopted": 348852,
+  "name": "BRONX COMMUNITY BOARD #3"
+ },
+ "384": {
+  "fy2026_modified": 313668,
+  "fy2027_adopted": 313241,
+  "name": "BRONX COMMUNITY BOARD #4"
+ },
+ "385": {
+  "fy2026_modified": 283540,
+  "fy2027_adopted": 282857,
+  "name": "BRONX COMMUNITY BOARD #5"
+ },
+ "386": {
+  "fy2026_modified": 297220,
+  "fy2027_adopted": 297220,
+  "name": "BRONX COMMUNITY BOARD #6"
+ },
+ "387": {
+  "fy2026_modified": 399652,
+  "fy2027_adopted": 394710,
+  "name": "BRONX COMMUNITY BOARD #7"
+ },
+ "388": {
+  "fy2026_modified": 365710,
+  "fy2027_adopted": 365828,
+  "name": "BRONX COMMUNITY BOARD #8"
+ },
+ "389": {
+  "fy2026_modified": 453870,
+  "fy2027_adopted": 410090,
+  "name": "BRONX COMMUNITY BOARD #9"
+ },
+ "390": {
+  "fy2026_modified": 383917,
+  "fy2027_adopted": 389147,
+  "name": "BRONX COMMUNITY BOARD #10"
+ },
+ "391": {
+  "fy2026_modified": 374565,
+  "fy2027_adopted": 375542,
+  "name": "BRONX COMMUNITY BOARD #11"
+ },
+ "392": {
+  "fy2026_modified": 296002,
+  "fy2027_adopted": 296002,
+  "name": "BRONX COMMUNITY BOARD #12"
+ },
+ "431": {
+  "fy2026_modified": 418538,
+  "fy2027_adopted": 341878,
+  "name": "QUEENS COMMUNITY BOARD #1"
+ },
+ "432": {
+  "fy2026_modified": 416566,
+  "fy2027_adopted": 416566,
+  "name": "QUEENS COMMUNITY BOARD #2"
+ },
+ "433": {
+  "fy2026_modified": 403253,
+  "fy2027_adopted": 416288,
+  "name": "QUEENS COMMUNITY BOARD #3"
+ },
+ "434": {
+  "fy2026_modified": 360109,
+  "fy2027_adopted": 360742,
+  "name": "QUEENS COMMUNITY BOARD #4"
+ },
+ "435": {
+  "fy2026_modified": 351556,
+  "fy2027_adopted": 351905,
+  "name": "QUEENS COMMUNITY BOARD #5"
+ },
+ "436": {
+  "fy2026_modified": 384547,
+  "fy2027_adopted": 388906,
+  "name": "QUEENS COMMUNITY BOARD #6"
+ },
+ "437": {
+  "fy2026_modified": 394912,
+  "fy2027_adopted": 394912,
+  "name": "QUEENS COMMUNITY BOARD #7"
+ },
+ "438": {
+  "fy2026_modified": 405966,
+  "fy2027_adopted": 408354,
+  "name": "QUEENS COMMUNITY BOARD #8"
+ },
+ "439": {
+  "fy2026_modified": 292781,
+  "fy2027_adopted": 295279,
+  "name": "QUEENS COMMUNITY BOARD #9"
+ },
+ "440": {
+  "fy2026_modified": 340735,
+  "fy2027_adopted": 346056,
+  "name": "QUEENS COMMUNITY BOARD #10"
+ },
+ "441": {
+  "fy2026_modified": 378531,
+  "fy2027_adopted": 378709,
+  "name": "QUEENS COMMUNITY BOARD #11"
+ },
+ "442": {
+  "fy2026_modified": 371829,
+  "fy2027_adopted": 379125,
+  "name": "QUEENS COMMUNITY BOARD #12"
+ },
+ "443": {
+  "fy2026_modified": 359482,
+  "fy2027_adopted": 362342,
+  "name": "QUEENS COMMUNITY BOARD #13"
+ },
+ "444": {
+  "fy2026_modified": 305109,
+  "fy2027_adopted": 305916,
+  "name": "QUEENS COMMUNITY BOARD #14"
+ },
+ "471": {
+  "fy2026_modified": 392989,
+  "fy2027_adopted": 393167,
+  "name": "BROOKLYN COMMUNITY BOARD #1"
+ },
+ "472": {
+  "fy2026_modified": 365767,
+  "fy2027_adopted": 369267,
+  "name": "BROOKLYN COMMUNITY BOARD #2"
+ },
+ "473": {
+  "fy2026_modified": 321564,
+  "fy2027_adopted": 323680,
+  "name": "BROOKLYN COMMUNITY BOARD #3"
+ },
+ "474": {
+  "fy2026_modified": 345739,
+  "fy2027_adopted": 349003,
+  "name": "BROOKLYN COMMUNITY BOARD #4"
+ },
+ "475": {
+  "fy2026_modified": 292874,
+  "fy2027_adopted": 292874,
+  "name": "BROOKLYN COMMUNITY BOARD #5"
+ },
+ "476": {
+  "fy2026_modified": 399467,
+  "fy2027_adopted": 399467,
+  "name": "BROOKLYN COMMUNITY BOARD #6"
+ },
+ "477": {
+  "fy2026_modified": 300927,
+  "fy2027_adopted": 300927,
+  "name": "BROOKLYN COMMUNITY BOARD #7"
+ },
+ "478": {
+  "fy2026_modified": 381743,
+  "fy2027_adopted": 385981,
+  "name": "BROOKLYN COMMUNITY BOARD #8"
+ },
+ "479": {
+  "fy2026_modified": 422354,
+  "fy2027_adopted": 426985,
+  "name": "BROOKLYN COMMUNITY BOARD #9"
+ },
+ "480": {
+  "fy2026_modified": 393082,
+  "fy2027_adopted": 393430,
+  "name": "BROOKLYN COMMUNITY BOARD #10"
+ },
+ "481": {
+  "fy2026_modified": 383950,
+  "fy2027_adopted": 391802,
+  "name": "BROOKLYN COMMUNITY BOARD #11"
+ },
+ "482": {
+  "fy2026_modified": 354934,
+  "fy2027_adopted": 421926,
+  "name": "BROOKLYN COMMUNITY BOARD #12"
+ },
+ "483": {
+  "fy2026_modified": 414787,
+  "fy2027_adopted": 419510,
+  "name": "BROOKLYN COMMUNITY BOARD #13"
+ },
+ "484": {
+  "fy2026_modified": 426670,
+  "fy2027_adopted": 447532,
+  "name": "BROOKLYN COMMUNITY BOARD #14"
+ },
+ "485": {
+  "fy2026_modified": 280971,
+  "fy2027_adopted": 280971,
+  "name": "BROOKLYN COMMUNITY BOARD #15"
+ },
+ "486": {
+  "fy2026_modified": 313065,
+  "fy2027_adopted": 313065,
+  "name": "BROOKLYN COMMUNITY BOARD #16"
+ },
+ "487": {
+  "fy2026_modified": 404958,
+  "fy2027_adopted": 414659,
+  "name": "BROOKLYN COMMUNITY BOARD #17"
+ },
+ "488": {
+  "fy2026_modified": 292201,
+  "fy2027_adopted": 292201,
+  "name": "BROOKLYN COMMUNITY BOARD #18"
+ },
+ "491": {
+  "fy2026_modified": 369744,
+  "fy2027_adopted": 371667,
+  "name": "STATEN ISLAND COMMUNITY BOARD #1"
+ },
+ "492": {
+  "fy2026_modified": 325687,
+  "fy2027_adopted": 325687,
+  "name": "STATEN ISLAND COMMUNITY BOARD #2"
+ },
+ "493": {
+  "fy2026_modified": 433123,
+  "fy2027_adopted": 435825,
+  "name": "STATEN ISLAND COMMUNITY BOARD #3"
+ },
+ "781": {
+  "fy2026_modified": 113046891,
+  "fy2027_adopted": 103958142,
+  "name": "DEPARTMENT OF PROBATION"
+ },
+ "801": {
+  "fy2026_modified": 320588220,
+  "fy2027_adopted": 274499662,
+  "name": "DEPARTMENT OF SMALL BUSINESS SERVICES"
+ },
+ "806": {
+  "fy2026_modified": 2039089673,
+  "fy2027_adopted": 1841679418,
+  "name": "HOUSING PRESERVATION AND DEVELOPMENT"
+ },
+ "810": {
+  "fy2026_modified": 201451670,
+  "fy2027_adopted": 233104951,
+  "name": "DEPARTMENT OF BUILDINGS"
+ },
+ "816": {
+  "fy2026_modified": 2817178038,
+  "fy2027_adopted": 2758477216,
+  "name": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE"
+ },
+ "819": {
+  "fy2026_modified": 1825344613,
+  "fy2027_adopted": 1645405136,
+  "name": "HEALTH AND HOSPITALS CORP"
+ },
+ "820": {
+  "fy2026_modified": 75302168,
+  "fy2027_adopted": 82469036,
+  "name": "OFFICE OF ADMIN TRIALS & HEARINGS"
+ },
+ "826": {
+  "fy2026_modified": 1908154595,
+  "fy2027_adopted": 1831914608,
+  "name": "DEPARTMENT OF ENVIRONMENTAL PROTECT."
+ },
+ "827": {
+  "fy2026_modified": 2349009694,
+  "fy2027_adopted": 2128104351,
+  "name": "DEPARTMENT OF SANITATION"
+ },
+ "829": {
+  "fy2026_modified": 9189839,
+  "fy2027_adopted": 8820536,
+  "name": "BUSINESS INTEGRITY COMMISSION"
+ },
+ "836": {
+  "fy2026_modified": 370315482,
+  "fy2027_adopted": 375453408,
+  "name": "DEPARTMENT OF FINANCE"
+ },
+ "841": {
+  "fy2026_modified": 1578436582,
+  "fy2027_adopted": 1633826179,
+  "name": "DEPARTMENT OF TRANSPORTATION"
+ },
+ "846": {
+  "fy2026_modified": 721425163,
+  "fy2027_adopted": 708039699,
+  "name": "DEPARTMENT OF PARKS AND RECREATION"
+ },
+ "850": {
+  "fy2026_modified": 170799492,
+  "fy2027_adopted": 164441963,
+  "name": "DEPARTMENT OF DESIGN & CONSTRUCTION"
+ },
+ "856": {
+  "fy2026_modified": 800451386,
+  "fy2027_adopted": 701913528,
+  "name": "DEPARTMENT OF CITYWIDE ADMIN SERVICE"
+ },
+ "858": {
+  "fy2026_modified": 805642912,
+  "fy2027_adopted": 608921161,
+  "name": "DEPARTMENT OF INFO TECH & TELECOMM"
+ },
+ "860": {
+  "fy2026_modified": 16461828,
+  "fy2027_adopted": 17147633,
+  "name": "DEPARTMENT OF RECORDS & INFORMATION SVS"
+ },
+ "866": {
+  "fy2026_modified": 80123139,
+  "fy2027_adopted": 135753812,
+  "name": "DEPT OF CONSUMER & WORKER PROTECTION"
+ },
+ "901": {
+  "fy2026_modified": 229781755,
+  "fy2027_adopted": 183644083,
+  "name": "DISTRICT ATTORNEY NEW YORK COUNTY"
+ },
+ "902": {
+  "fy2026_modified": 162087408,
+  "fy2027_adopted": 144650968,
+  "name": "DISTRICT ATTORNEY BRONX COUNTY"
+ },
+ "903": {
+  "fy2026_modified": 203105666,
+  "fy2027_adopted": 168886120,
+  "name": "DISTRICT ATTORNEY KINGS COUNTY"
+ },
+ "904": {
+  "fy2026_modified": 127725826,
+  "fy2027_adopted": 109865303,
+  "name": "DISTRICT ATTORNEY QUEENS COUNTY"
+ },
+ "905": {
+  "fy2026_modified": 34222481,
+  "fy2027_adopted": 27948789,
+  "name": "DISTRICT ATTORNEY RICHMOND COUNTY"
+ },
+ "906": {
+  "fy2026_modified": 31694549,
+  "fy2027_adopted": 31933198,
+  "name": "OFFICE OF PROSECUTION SPEC NARCO"
+ },
+ "941": {
+  "fy2026_modified": 1202423,
+  "fy2027_adopted": 1225861,
+  "name": "PUBLIC ADMINISTRATOR-NEW YORK COUNTY"
+ },
+ "942": {
+  "fy2026_modified": 1060883,
+  "fy2027_adopted": 896365,
+  "name": "PUBLIC ADMINISTRATOR-BRONX COUNTY"
+ },
+ "943": {
+  "fy2026_modified": 1167703,
+  "fy2027_adopted": 1163261,
+  "name": "PUBLIC ADMINISTRATOR-KINGS COUNTY"
+ },
+ "944": {
+  "fy2026_modified": 694608,
+  "fy2027_adopted": 701586,
+  "name": "PUBLIC ADMINISTRATOR- QUEENS COUNTY"
+ },
+ "945": {
+  "fy2026_modified": 718451,
+  "fy2027_adopted": 657628,
+  "name": "PUBLIC ADMINISTRATOR-RICHMOND COUNTY"
+ }
+}

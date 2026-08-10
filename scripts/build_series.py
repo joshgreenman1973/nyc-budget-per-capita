@@ -117,6 +117,84 @@ NONTAX = [
       "provision for disallowances of federal state and other aid receivables"]),
 ]
 
+# OMB expense-budget agency codes -> ACFR function, for the budget years.
+# The mapping is derived from the FY2025 ACFR's own General Fund expenditure
+# schedule, which lists every agency code under a function heading; the walk
+# below reads that structure straight out of the extracted rows. The explicit
+# entries cover codes the ACFR schedule does not carry:
+#   - community boards (341-493): the ACFR files every community board under
+#     General Government
+#   - 058 Office of Community Safety, new in FY2027, a coordinating office for
+#     crime-prevention programs; assigned to public safety ($3M, immaterial)
+#   - 095/098/099 are the citywide pseudo-agencies: pension contributions, the
+#     Miscellaneous budget (dominated by fringe benefits, and also carrying
+#     judgments, reserves and other citywide costs) and debt service
+OMB_EXTRA_FUNCTIONS = {"040": "education", "042": "city_university",
+                       "095": "pensions", "098": "fringe_benefits",
+                       "099": "debt_service", "058": "public_safety"}
+OMB_TOTAL_LABELS = {
+    "total general government": "general_government",
+    "total public safety and judicial": "public_safety",
+    "total city university": "city_university",
+    "total social services": "social_services",
+    "total environmental protection": "environmental",
+    "total transportation services": "transportation",
+    "total parks recreation and cultural activities": "parks",
+    "total housing": "housing", "total health": "health",
+    "total libraries": "libraries",
+}
+
+
+def derive_omb_functions(cells):
+    """Agency code -> function, read from the FY2025 ACFR schedule order.
+
+    The report paginates each schedule twice -- a six-year page and a
+    four-year page -- and their rows interleave in extraction order, which
+    would flush one page's pending codes at the other page's subtotal. Walking
+    only the rows that carry an FY2025 value keeps to a single clean sequence.
+    """
+    rows = sorted((order, label) for (t, src, order, label), vals
+                  in cells.items()
+                  if t == "gf_expenditures" and src == "acfr2025"
+                  and 2025 in vals)
+    code2fun = dict(OMB_EXTRA_FUNCTIONS)
+    pending = []
+    for _order, label in rows:
+        n = norm(label)
+        fun = OMB_TOTAL_LABELS.get(n)
+        if fun:
+            for c in pending:
+                code2fun.setdefault(c, fun)
+            pending = []
+        else:
+            pending.extend(re.findall(r"\b(\d{3})\b", label))
+    return code2fun
+
+
+def budget_year_categories(cells):
+    """FY2026/FY2027 spending by function, in $ thousands, from the OMB
+    agency table. Community boards default to general government, matching the
+    ACFR's own filing. Fails if any agency cannot be placed."""
+    path = os.path.join(OUT, "omb_agencies.json")
+    if not os.path.exists(path):
+        return None
+    agencies = json.load(open(path))
+    code2fun = derive_omb_functions(cells)
+    out = {}
+    for col, fy in (("fy2026_modified", 2026), ("fy2027_adopted", 2027)):
+        cats = collections.defaultdict(int)
+        for code, a in agencies.items():
+            fun = code2fun.get(code)
+            if fun is None and re.fullmatch(r"[34]\d\d", code):
+                fun = "general_government"      # community boards
+            if fun is None:
+                sys.exit(f"FATAL: no function for OMB agency {code} "
+                         f"{a['name']!r} (${a[col]:,})")
+            cats[fun] += a[col]
+        out[fy] = {k: round(v / 1000) for k, v in cats.items()}
+    return out
+
+
 # Rows below "Miscellaneous" in the revenue schedule. This is a "Revenues and
 # Other Financing Sources" table and its printed total includes them.
 OTHER_FINANCING = [
@@ -474,8 +552,11 @@ def build():
             {"fy": 2027, "basis": "OMB FY2027 adopted budget, June 2026",
              "col": "fy2027_adopted"},
         ]
+        omb_cats = budget_year_categories(cells)
         for b in payload["budget_years"]:
             c = b.pop("col")
+            if omb_cats and b["fy"] in omb_cats:
+                b["categories"] = omb_cats[b["fy"]]
             b["total_expense"] = omb["net_total_expense"][c]
             b["city_funds"] = omb["city_funds_and_capital_transfers"][c]
             b["state_aid"] = omb["state_categorical"][c]

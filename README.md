@@ -17,13 +17,21 @@ adjusted for inflation.
 | Capital spending by function | 2000–2025 | Capital Projects Fund expenditure schedule |
 | Revenue by source, including the federal and state split | 2000–2025 | General Fund revenue schedule |
 | Bonds issued, premium and refunding | 2000–2025 | Governmental funds statement |
-| Expense budget | 2026–2027 | Office of Management and Budget, adopted budget for fiscal 2027 |
+| Expense budget, total and by agency/function | 2026–2027 | Office of Management and Budget, adopted budget for fiscal 2027 |
 | City GDP (denominator) | 2002–2024 | Bureau of Economic Analysis county series, five boroughs, current dollars |
+
+The page also has a growth calculator (any year to any year, total or by
+category, honoring the per-capita and inflation toggles), amounts/share-of-total
+toggles on the category charts, click-to-isolate trend lines from every legend
+and a spending-as-share-of-GDP view built on BEA county GDP.
 
 Fiscal years 2026 and 2027 are not audited and sit on the budget basis, which
 covers operations and debt service but not capital. Fiscal 2026 has closed but
 awaits its autumn audit, so its figure is the city's June 2026 year-end estimate;
-fiscal 2027 is the adopted budget for the year under way. Both are drawn hatched,
+fiscal 2027 is the adopted budget for the year under way. Category detail for the
+two budget years comes from the document's 141 agency-level tables, each agency
+assigned to a function using the Comptroller's own classification of agency
+codes, reconciling to the budget's printed total. Both years are drawn hatched,
 behind a divider, and are never blended into the audited series.
 
 ## How it is built

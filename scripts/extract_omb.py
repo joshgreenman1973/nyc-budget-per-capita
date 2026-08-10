@@ -19,6 +19,8 @@ import os
 import re
 import sys
 
+import re as _re
+
 import fitz
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -123,9 +125,13 @@ def run():
             sys.exit(f"FATAL: {col} revenue {rev:,} vs expense {exp:,} "
                      f"(gap {rev - exp:,}) -- budget should balance")
 
+    agencies = extract_agencies(doc, found)
+
     os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(OUT, "omb_budget.json"), "w") as f:
         json.dump(found, f, indent=1, sort_keys=True)
+    with open(os.path.join(OUT, "omb_agencies.json"), "w") as f:
+        json.dump(agencies, f, indent=1, sort_keys=True)
 
     print("OMB Adopted Budget FY2027 (billions):")
     for k in ("net_total_expense", "city_funds_and_capital_transfers",
@@ -134,6 +140,93 @@ def run():
         print(f"  {k:36s} FY26adopt {v['fy2026_adopted']/1e9:7.2f}  "
               f"FY26mod {v['fy2026_modified']/1e9:7.2f}  "
               f"FY27adopt {v['fy2027_adopted']/1e9:7.2f}")
+
+
+HEADER_RE = _re.compile(
+    r"\n\s{10,}([A-Z][A-Z0-9 #,.&()'/-]{3,70}?)\s*\n\s*(\d{3})\s+"
+    r"AGENCY EXPENSE BUDGET SUMMARY")
+# An amount is either $-prefixed (any size: a change can be $213) or carries
+# thousands separators. Bare integers like full-time position counts match
+# neither and stay out of the way.
+AMT_RE = _re.compile(r"\$-?[\d,]+|-?\d{1,3}(?:,\d{3})+")
+
+
+def extract_agencies(doc, summary):
+    """Net expense budget per agency, FY2026 as modified and FY2027 adopted.
+
+    Each agency's section ends with a NET TOTAL DEPARTMENT line whose columns
+    are: FY2026 adopted, FY2026 as modified, change, FY2027 adopted, change.
+    The two change columns let every line be checked arithmetically, and the
+    sum across agencies must rebuild the summary's net total expense budget.
+    """
+    sections = []          # (code, name, first_page)
+    for i in range(len(doc)):
+        t = doc[i].get_text()
+        if "AGENCY EXPENSE BUDGET SUMMARY" not in t or "(CONT.)" in t[:400]:
+            continue
+        m = HEADER_RE.search(t)
+        if m and (not sections or sections[-1][0] != m.group(2)):
+            sections.append((m.group(2), " ".join(m.group(1).split()), i))
+
+    if len(sections) < 60:
+        sys.exit(f"FATAL: only {len(sections)} agency sections found")
+
+    agencies = {}
+    for idx, (code, name, p0) in enumerate(sections):
+        p1 = sections[idx + 1][2] if idx + 1 < len(sections) else min(len(doc), p0 + 40)
+        line = None
+        for p in range(p0, p1):
+            for cand in doc[p].get_text().split("\n"):
+                # The notes below some tables mention the phrase in prose, so a
+                # candidate line must actually carry the five amount columns.
+                if "NET TOTAL DEPARTMENT" in cand and len(AMT_RE.findall(cand)) >= 5:
+                    line = cand          # keep the last one in the section
+        if line is None:
+            # Tiny agencies print only TOTAL; fall back to it.
+            for p in range(p0, p1):
+                for cand in doc[p].get_text().split("\n"):
+                    if _re.match(r"\s*TOTAL\s+\$?[\d,]", cand):
+                        line = cand
+        if line is None:
+            sys.exit(f"FATAL: no net total line for {code} {name}")
+
+        nums = [int(t.strip("$").replace(",", "")) for t in AMT_RE.findall(line)]
+        if len(nums) >= 5:
+            fy26a, fy26m, chg1, fy27, chg2 = nums[:5]
+            if (abs(abs(fy26m - fy26a) - chg1) > 1
+                    or abs(abs(fy27 - fy26m) - chg2) > 1):
+                sys.exit(f"FATAL: change columns do not verify for {code} "
+                         f"{name}: {nums[:5]}")
+        elif len(nums) == 3 and nums[0] == nums[1] == nums[2]:
+            # Both change columns blank: the appropriation never moved.
+            fy26m, fy27 = nums[1], nums[2]
+        elif (len(nums) == 4 and nums[3] == nums[1]
+                and abs(abs(nums[1] - nums[0]) - nums[2]) <= 1):
+            # Second change column blank: FY2027 equals FY2026 as modified.
+            fy26m, fy27 = nums[1], nums[3]
+        elif (len(nums) == 4 and nums[0] == nums[1]
+                and abs(abs(nums[2] - nums[1]) - nums[3]) <= 1):
+            # A zero change column is left blank, dropping one token.
+            fy26m, fy27 = nums[1], nums[2]
+        elif len(nums) == 2 and nums[0] == nums[1]:
+            # An agency created in FY2027 has no FY2026 columns; the change
+            # from a zero base equals the appropriation itself.
+            fy26m, fy27 = 0, nums[0]
+        else:
+            sys.exit(f"FATAL: bad total line for {code} {name}: {line!r}")
+        agencies[code] = {"name": name, "fy2026_modified": fy26m,
+                          "fy2027_adopted": fy27}
+
+    for col, key in (("fy2026_modified", "fy2026_modified"),
+                     ("fy2027_adopted", "fy2027_adopted")):
+        total = sum(a[col] for a in agencies.values())
+        target = summary["net_total_expense"][key]
+        if abs(total - target) > 2e6:
+            sys.exit(f"FATAL: agency {col} sum {total:,} vs summary net total "
+                     f"{target:,} (diff {total - target:,})")
+
+    print(f"agencies: {len(agencies)}, both columns reconcile to the summary")
+    return agencies
 
 
 if __name__ == "__main__":

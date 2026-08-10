@@ -67,6 +67,10 @@
       measure of operations plus debt service, the city spent $117.7 billion in fiscal
       2025, expects about $126.8 billion for fiscal 2026 and has budgeted $126.2 billion
       for fiscal 2027.</p>
+    <p class="note">Sources: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
+      reports</a> (fiscal 2005, 2015 and 2025 statistical sections) &#183;
+      <a href="https://www.nyc.gov/site/omb/publications/publications.page">Office of Management and Budget, adopted budget for fiscal
+      2027</a>.</p>
   </section>
 
   <section class="block" id="categories">
@@ -94,6 +98,10 @@
       <div class="tablewrap" id="c2Table" hidden></div>
     </figure>
     <p class="note" id="c2Note"></p>
+    <p class="note">Sources: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
+      reports</a> (General Fund and Capital Projects Fund expenditure schedules) &#183;
+      <a href="https://www.nyc.gov/site/omb/publications/publications.page">Office of Management and Budget, adopted budget for fiscal 2027</a>
+      (agency expense budget summaries).</p>
   </section>
 
   <section class="block" id="borrowing">
@@ -111,7 +119,13 @@
       <div class="tablewrap" id="c3Table" hidden></div>
     </figure>
     <p class="note">Refunding bonds, which refinance existing debt rather than raise new
-      money, are excluded. Bond premium is included in proceeds.</p>
+      money, are excluded; bond premium is included in proceeds. Issuance covers all the
+      city's governmental funds, including the Transitional Finance Authority, not
+      general obligation bonds alone. Money is borrowed when markets are favorable, not
+      when shovels move, so issuance and construction spending should track each other
+      over years rather than match year by year.</p>
+    <p class="note">Source: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
+      reports</a> (changes in fund balances and Capital Projects Fund schedules).</p>
   </section>
 
   <section class="block" id="revenue">
@@ -134,6 +148,48 @@
       <p class="hint" id="c4Hint"></p>
       <div class="tablewrap" id="c4Table" hidden></div>
     </figure>
+    <p class="note">Federal aid includes one-time surges &#8212; stimulus after the 2008
+      financial crisis, Covid-19 relief from 2020 to 2023 &#8212; so swings in that band
+      are often Washington's calendar, not the city's. This is General Fund revenue:
+      federal and state grants that reimburse capital construction arrive in a separate
+      fund and appear in the borrowing section, not here.</p>
+    <p class="note">Source: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
+      reports</a> (General Fund revenues schedule).</p>
+  </section>
+
+  <section class="block" id="growth">
+    <h2>Growth, from any year to any year</h2>
+    <p class="dek">Pick two fiscal years and a measure. The result respects the
+      toggles at the top of the page, so it can answer the question four ways:
+      raw dollars, per resident, inflation-adjusted or both.</p>
+    <div class="chart-card growth-card">
+      <div class="growth-row">
+        <label class="growth-field">
+          <span class="toggle-label">Measure</span>
+          <select id="gMeasure" class="sel"></select>
+        </label>
+        <label class="growth-field">
+          <span class="toggle-label">Category</span>
+          <select id="gCategory" class="sel"></select>
+        </label>
+        <label class="growth-field">
+          <span class="toggle-label">From</span>
+          <select id="gFrom" class="sel"></select>
+        </label>
+        <label class="growth-field">
+          <span class="toggle-label">To</span>
+          <select id="gTo" class="sel"></select>
+        </label>
+      </div>
+      <div class="growth-result" id="gResult"></div>
+    </div>
+    <p class="note">Audited years only, so fiscal 2000 through 2025. Change the
+      toggles at the top of the page to switch the basis. Two-point growth is
+      sensitive to the endpoints you pick: starting in a recession year or ending in
+      a stimulus year can flatter or understate a trend, so try shifting each end a
+      year or two before drawing conclusions.</p>
+    <p class="note">Source: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
+      reports</a>.</p>
   </section>
 
   <section class="block" id="gdp">
@@ -156,7 +212,15 @@
       average of the two it spans. Both sides of the ratio are in the same year's
       dollars, so the inflation and per-person toggles do not change it. The series
       starts in fiscal 2002 because the county accounts begin in 2001, and stops at
-      fiscal 2024 because calendar 2025 has not been measured yet.</p>
+      fiscal 2024 because calendar 2025 has not been measured yet. Two cautions:
+      county output is measured where the work happens, so Manhattan's figure counts
+      what commuters produce, and this ratio is not the share of New Yorkers' income
+      taken by the city. County-level GDP is also estimated with wider error bands
+      than the national accounts, and recent years are revised as source data
+      arrive.</p>
+    <p class="note">Sources: <a href="https://apps.bea.gov/regional/downloadzip.htm">Bureau of Economic Analysis, county gross
+      domestic product (CAGDP1)</a> &#183; <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual
+      comprehensive financial reports</a>.</p>
   </section>
 
   <section class="block" id="methodology">
@@ -218,7 +282,14 @@
         after it closed. <strong>Inflation</strong> uses the Bureau of Labor Statistics
         consumer price index for all urban consumers in the New York, Newark and Jersey
         City metropolitan area, averaged over the twelve months of each fiscal year.
-        Adjusted figures are in fiscal 2025 dollars.</p>
+        Adjusted figures are in fiscal 2025 dollars. Two caveats ride along with those
+        choices. Population estimates are revised after every census, and the 2020 to
+        2025 figures are still provisional; per-resident figures also divide by people
+        who live here, though the city serves commuters and visitors too. And the
+        consumer price index tracks what households buy, not what governments buy
+        &#8212; wages, construction and medical costs have often run ahead of it &#8212;
+        so "adjusted for inflation" understates cost pressure on some city
+        services.</p>
 
       <p><strong>Why the series starts in fiscal 2000.</strong> The Comptroller's
         schedules reach back to fiscal 1996, but before fiscal 2000 the governmental
@@ -231,10 +302,14 @@
         closed on June 30, 2026 and its audited report is not published until the
         autumn; fiscal 2027 is a plan. Both come from the Office of Management and
         Budget's adopted budget for fiscal 2027 — fiscal 2026 as modified, fiscal
-        2027 as adopted. The budget basis nets out intra-city transactions and counts
-        capital budget transfers, so it does not tie line for line to the audited
-        series. Per-person figures for those two years reuse the 2025 population,
-        because no later Census estimate has been published.</p>
+        2027 as adopted. Category detail for those two years comes from the same
+        document's agency-level tables, with each agency assigned to a function using
+        the Comptroller's own classification of agency codes; all 141 agencies
+        reconcile to the budget's printed total. The budget basis nets out intra-city
+        transactions and pools citywide costs in its Miscellaneous budget, so it does
+        not tie line for line to the audited series. Per-person figures for those two
+        years reuse the 2025 population, because no later Census estimate has been
+        published.</p>
 
       <h3>What was checked against other sources</h3>
       <ul class="checks">
@@ -285,6 +360,10 @@
         <a href="nyc-budget-fy2000-fy2025.csv" download>Full series, comma-separated (all categories, all years)</a>
         <a href="data.json" download>Site data, JSON</a>
         <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller's annual reports</a>
+        <a href="https://www.nyc.gov/site/omb/publications/publications.page">OMB budget publications</a>
+        <a href="https://apps.bea.gov/regional/downloadzip.htm">BEA county GDP</a>
+        <a href="https://www.census.gov/programs-surveys/popest.html">Census population estimates</a>
+        <a href="https://www.bls.gov/cpi/regional-resources.htm">BLS regional CPI</a>
         <a href="https://github.com/joshgreenman1973/nyc-budget-per-capita">Extraction and build code</a>
       </p>
       <p class="aicaution">Built with AI assistance. The figures are machine-extracted

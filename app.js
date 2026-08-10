@@ -139,6 +139,40 @@
         out.values[gi].push(share ? (total ? (v / total) * 100 : 0) : scale(r, v));
       });
     });
+    out.blabels = out.years.map(function () { return null; });
+
+    // The adopted-budget document details FY2026 and FY2027 by agency, and the
+    // Comptroller's schedule says which function each agency code belongs to,
+    // so the operating chart can carry the two unaudited years. The budget
+    // basis nets out intra-city purchases and pools citywide costs (fringe
+    // benefits, transit subsidies, judgments, reserves) in the Miscellaneous
+    // budget, so the hatched bars are close but not line-for-line comparable.
+    if (kind === "operating") {
+      var lastDef = DATA.years[DATA.years.length - 1].deflator;
+      out.note = "Unaudited, on the budget basis: intra-city purchases are " +
+        "netted out, and citywide costs such as transit subsidies, judgments " +
+        "and reserves sit in the benefits band.";
+      (DATA.budget_years || []).forEach(function (b) {
+        if (!b.categories) return;
+        var pseudo = { deflator: lastDef, population: b.population };
+        var raw = groups.map(function (g) {
+          var sum = 0;
+          g[1].forEach(function (key) {
+            if (b.categories[key] !== undefined) sum += b.categories[key];
+          });
+          return sum;
+        });
+        var total = raw.reduce(function (a, x) { return a + x; }, 0);
+        out.years.push(b.fy);
+        out.budget.push(true);
+        out.blabels.push(/as modified/i.test(b.basis) ? "unaudited estimate"
+                                                      : "adopted budget");
+        raw.forEach(function (v, gi) {
+          out.values[gi].push(share ? (total ? (v / total) * 100 : 0)
+                                    : scale(pseudo, v));
+        });
+      });
+    }
     return out;
   }
 
@@ -149,6 +183,7 @@
     s.names.forEach(function (n, i) { if (picked.indexOf(n) >= 0) keep.push(i); });
     return {
       years: s.years, budget: s.budget, unit: s.unit, note: s.note,
+      blabels: s.blabels,
       names: keep.map(function (i) { return s.names[i]; }),
       slots: keep.map(function (i) { return s.slots[i]; }),
       values: keep.map(function (i) { return s.values[i]; })
@@ -333,11 +368,26 @@
     });
 
     s.values.forEach(function (vals, si) {
-      var d = vals.map(function (v, i) {
-        return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1);
-      }).join(" ");
-      svg.appendChild(el("path", { d: d, fill: "none", stroke: colorOf(s, si),
-        "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+      // Solid through the audited years; dashed across any budget years.
+      var solid = "", dash = "";
+      vals.forEach(function (v, i) {
+        var pt = x(i).toFixed(1) + " " + y(v).toFixed(1);
+        if (i === 0) { solid = "M" + pt; return; }
+        if (s.budget[i] || s.budget[i - 1]) {
+          dash += (dash ? " L" : "M" + x(i - 1).toFixed(1) + " " +
+            y(vals[i - 1]).toFixed(1) + " L") + pt;
+        } else {
+          solid += " L" + pt;
+        }
+      });
+      svg.appendChild(el("path", { d: solid, fill: "none",
+        stroke: colorOf(s, si), "stroke-width": 2,
+        "stroke-linejoin": "round", "stroke-linecap": "round" }));
+      if (dash) {
+        svg.appendChild(el("path", { d: dash, fill: "none",
+          stroke: colorOf(s, si), "stroke-width": 2, "stroke-dasharray": "4 4",
+          "stroke-linejoin": "round", "stroke-linecap": "round" }));
+      }
     });
 
     // Right-edge labels, nudged apart where lines finish close together.
@@ -522,6 +572,138 @@
     }).join("");
   }
 
+
+  /* ---------- growth calculator ---------- */
+
+  var G_MEASURES = [
+    ["total", "Total spending (operations, debt and capital)"],
+    ["operating", "Operating spending"],
+    ["capital", "Capital spending"],
+    ["revenue", "Revenue"]
+  ];
+
+  function growthValue(measure, catName, r) {
+    // Returns $ thousands for one audited year.
+    if (measure === "total") {
+      return r.operating_total + r.debt_service + r.capital_total;
+    }
+    var bucket = measure === "revenue" ? r.revenue
+      : measure === "capital" ? r.capital : r.operating;
+    if (catName === "__all") {
+      return measure === "revenue" ? r.revenue_total
+        : measure === "capital" ? r.capital_total
+        : r.operating_total + r.debt_service;
+    }
+    var group = null;
+    groupsFor(measure).forEach(function (g) {
+      if (g[0] === catName) group = g;
+    });
+    if (!group) return 0;
+    var sum = 0;
+    group[1].forEach(function (key) {
+      if (key === "debt_service") sum += r.debt_service;
+      else if (bucket[key] !== undefined) sum += bucket[key];
+    });
+    return sum;
+  }
+
+  function growthCategories() {
+    var m = document.getElementById("gMeasure").value;
+    var sel = document.getElementById("gCategory");
+    var keep = sel.value;
+    sel.textContent = "";
+    var all = document.createElement("option");
+    all.value = "__all";
+    all.textContent = m === "total" ? "Everything" : "All categories";
+    sel.appendChild(all);
+    if (m !== "total") {
+      groupsFor(m).forEach(function (g) {
+        var o = document.createElement("option");
+        o.value = g[0]; o.textContent = g[0];
+        sel.appendChild(o);
+      });
+    }
+    sel.value = "__all";
+    if (keep) {
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === keep) { sel.value = keep; break; }
+      }
+    }
+    sel.disabled = m === "total";
+  }
+
+  function updateGrowth() {
+    var box = document.getElementById("gResult");
+    if (!box) return;
+    var m = document.getElementById("gMeasure").value;
+    var cat = document.getElementById("gCategory").value;
+    var y0 = +document.getElementById("gFrom").value;
+    var y1 = +document.getElementById("gTo").value;
+    if (y0 > y1) { var t_ = y0; y0 = y1; y1 = t_; }
+    if (y0 === y1) {
+      box.innerHTML = '<p class="g-note">Pick two different fiscal years.</p>';
+      return;
+    }
+    var rows = {};
+    DATA.years.forEach(function (r) { rows[r.fy] = r; });
+    var r0 = rows[y0], r1 = rows[y1];
+    var v0 = scale(r0, growthValue(m, cat, r0));
+    var v1 = scale(r1, growthValue(m, cat, r1));
+    if (!(v0 > 0)) {
+      box.innerHTML = '<p class="g-note">No spending recorded in the ' +
+        "starting year for that pick.</p>";
+      return;
+    }
+    var pct = (v1 / v0 - 1) * 100;
+    var yrs = y1 - y0;
+    var ann = (Math.pow(v1 / v0, 1 / yrs) - 1) * 100;
+    var what = m === "total" ? "Total spending"
+      : cat === "__all"
+        ? { operating: "Operating spending", capital: "Capital spending",
+            revenue: "Revenue" }[m]
+        : cat;
+    box.innerHTML =
+      '<p class="g-big">' + (pct >= 0 ? "+" : "\u2212") +
+        Math.abs(pct) .toFixed(1) + "%</p>" +
+      '<p class="g-line">' + what + ", fiscal " + y0 + " to " + y1 + "</p>" +
+      '<p class="g-line">' + fmt(v0) + " \u2192 " + fmt(v1) +
+        " \u00b7 " + (ann >= 0 ? "+" : "\u2212") + Math.abs(ann).toFixed(1) +
+        "% a year over " + yrs + " years</p>" +
+      '<p class="g-basis">' +
+        (state.real ? "Adjusted for inflation, fiscal " +
+          DATA.meta.dollar_base_fy + " dollars" : "Not adjusted for inflation") +
+        (state.perCapita ? " \u00b7 per resident" : "") +
+        " \u00b7 audited years only</p>";
+  }
+
+  function growthInit() {
+    if (!document.getElementById("gMeasure")) return;
+    var mSel = document.getElementById("gMeasure");
+    G_MEASURES.forEach(function (mm) {
+      var o = document.createElement("option");
+      o.value = mm[0]; o.textContent = mm[1];
+      mSel.appendChild(o);
+    });
+    var years = DATA.years.map(function (r) { return r.fy; });
+    [["gFrom", years[0]], ["gTo", years[years.length - 1]]].forEach(function (p) {
+      var sel = document.getElementById(p[0]);
+      years.forEach(function (y) {
+        var o = document.createElement("option");
+        o.value = y; o.textContent = "FY" + y;
+        sel.appendChild(o);
+      });
+      sel.value = p[1];
+    });
+    growthCategories();
+    mSel.addEventListener("change", function () {
+      growthCategories(); updateGrowth();
+    });
+    ["gCategory", "gFrom", "gTo"].forEach(function (id) {
+      document.getElementById(id).addEventListener("change", updateGrowth);
+    });
+    updateGrowth();
+  }
+
   /* ---------- render ---------- */
 
   function drawCategoryChart(id, kind, selKey) {
@@ -569,10 +751,27 @@
       (state.mode === "operating" ? "Operating spending" : "Capital spending") +
       (c2.share ? ", share of the total" : " by category") +
       (c2.isolated ? ", isolated" : "") +
-      (state.perCapita && !c2.share ? ", per resident" : "");
+      (state.perCapita && !c2.share ? ", per resident" : "") +
+      (state.mode === "operating" ? ", fiscal 2000 to 2027"
+                                  : ", fiscal 2000 to 2025");
     document.getElementById("c2Hint").textContent = c2.isolated
-      ? "Showing " + c2.count + " of 8 categories as trend lines. Click others to add them."
-      : "Click any category below to isolate its trend line. Click more to compare.";
+      ? "Showing " + c2.count + " of 8 categories as trend lines. Click others " +
+        "in the legend to add them, or use \u201cshow all\u201d to reset."
+      : "Click any category in the legend to isolate its trend line. " +
+        "Click more to compare.";
+    document.getElementById("c2Note").textContent = state.mode === "operating"
+      ? "Operating spending is the General Fund plus its transfers for debt " +
+        "service. The hatched fiscal 2026 and 2027 columns are the Office of " +
+        "Management and Budget's agency-level expense budget, grouped using " +
+        "the Comptroller's own agency-to-function classification. They are " +
+        "close but not line-for-line comparable: the budget basis nets out " +
+        "intra-city purchases, and citywide costs such as transit subsidies, " +
+        "judgments and reserves sit in the Miscellaneous budget, which " +
+        "appears here in the benefits band."
+      : "Capital spending is the Capital Projects Fund. City University " +
+        "capital runs through the education line. The adopted budget does " +
+        "not restate the capital program on this basis, so the hatched " +
+        "years are omitted.";
 
     cache.c3 = (function () {
       var rows = DATA.years;
@@ -603,8 +802,10 @@
       (c4.isolated ? ", isolated" : "") +
       (state.perCapita && !c4.share ? ", per resident" : "");
     document.getElementById("c4Hint").textContent = c4.isolated
-      ? "Showing " + c4.count + " of 8 sources as trend lines. Click others to add them."
-      : "Click any source below to isolate its trend line. Click more to compare.";
+      ? "Showing " + c4.count + " of 8 sources as trend lines. Click others " +
+        "in the legend to add them, or use \u201cshow all\u201d to reset."
+      : "Click any source in the legend to isolate its trend line. " +
+        "Click more to compare.";
 
     cache.c5 = gdpSeries();
     stacked(document.getElementById("c5"), cache.c5,
@@ -613,6 +814,8 @@
     document.getElementById("c5Title").textContent =
       "Spending as a share of city GDP, fiscal " + cache.c5.years[0] +
       " to " + cache.c5.years[cache.c5.years.length - 1];
+
+    updateGrowth();
 
     ["c1", "c2", "c3", "c4", "c5"].forEach(function (id) {
       var t = document.getElementById(id + "Table");
@@ -674,6 +877,7 @@
     .then(function (d) {
       DATA = d;
       bind();
+      growthInit();
       render();
       var t;
       window.addEventListener("resize", function () {
