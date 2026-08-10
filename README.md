@@ -20,9 +20,11 @@ adjusted for inflation.
 | Expense budget | 2026–2027 | Office of Management and Budget, adopted budget for fiscal 2027 |
 | City GDP (denominator) | 2002–2024 | Bureau of Economic Analysis county series, five boroughs, current dollars |
 
-Fiscal years 2026 and 2027 are budgeted rather than audited and sit on the budget
-basis, which covers operations and debt service but not capital. They are drawn
-hatched, behind a divider, and are never blended into the audited series.
+Fiscal years 2026 and 2027 are not audited and sit on the budget basis, which
+covers operations and debt service but not capital. Fiscal 2026 has closed but
+awaits its autumn audit, so its figure is the city's June 2026 year-end estimate;
+fiscal 2027 is the adopted budget for the year under way. Both are drawn hatched,
+behind a divider, and are never blended into the audited series.
 
 ## How it is built
 

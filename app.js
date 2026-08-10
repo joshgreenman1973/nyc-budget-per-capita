@@ -171,6 +171,7 @@
     // service, with no capital. Those bars are shorter by construction.
     out.note = "Budget figures cover the expense budget only. Capital is not " +
       "included, so these bars are not comparable with the audited years.";
+    out.blabels = out.years.map(function () { return null; });
     (DATA.budget_years || []).forEach(function (b) {
       var def = DATA.years[DATA.years.length - 1].deflator;
       var f = function (dollars) {
@@ -180,6 +181,11 @@
         return v;
       };
       out.years.push(b.fy); out.budget.push(true);
+      // A closed-but-unaudited year is not the same thing as a plan: FY2026
+      // ended before the audit, so its figure is the city's own year-end
+      // estimate; FY2027 is the adopted budget for the year under way.
+      out.blabels.push(/as modified/i.test(b.basis) ? "unaudited estimate"
+                                                    : "adopted budget");
       out.values[0].push(f(b.total_expense - b.debt_service));
       out.values[1].push(f(b.debt_service));
       out.values[2].push(0);
@@ -287,7 +293,7 @@
         stroke: css("--ink"), "stroke-width": 1, "stroke-dasharray": "2 3",
         opacity: 0.45 }));
       var bl = el("text", { x: bx + 5, y: m.t + 11, class: "ax-text" });
-      bl.textContent = "budgeted";
+      bl.textContent = "not yet audited";
       svg.appendChild(bl);
     }
 
@@ -433,7 +439,8 @@
 
   function showTip(ev, fy, s, i, total) {
     var html = '<div class="tt-head"><span>Fiscal ' + fy + "</span>" +
-      (s.budget[i] ? "<span>budgeted</span>" : "") + "</div>";
+      (s.budget[i] ? "<span>" + ((s.blabels && s.blabels[i]) || "budgeted") +
+        "</span>" : "") + "</div>";
     for (var k = s.values.length - 1; k >= 0; k--) {
       var v = s.values[k][i];
       if (!v) continue;
@@ -467,7 +474,8 @@
     h += "</tr></thead><tbody>";
     s.years.forEach(function (fy, i) {
       var tot = 0;
-      h += "<tr><td>" + fy + (s.budget[i] ? " (budgeted)" : "") + "</td>";
+      h += "<tr><td>" + fy + (s.budget[i] ? " (" +
+        ((s.blabels && s.blabels[i]) || "budgeted") + ")" : "") + "</td>";
       s.values.forEach(function (vals) {
         tot += vals[i];
         h += "<td>" + fmt(vals[i], s.unit) + "</td>";
