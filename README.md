@@ -20,10 +20,14 @@ adjusted for inflation.
 | Expense budget, total and by agency/function | 2026–2027 | Office of Management and Budget, adopted budget for fiscal 2027 |
 | City GDP (denominator) | 2002–2024 | Bureau of Economic Analysis county series, five boroughs, current dollars |
 
-The page also has a growth calculator (any year to any year, total or by
-category, honoring the per-capita and inflation toggles), amounts/share-of-total
-toggles on the category charts, click-to-isolate trend lines from every legend
-and a spending-as-share-of-GDP view built on BEA county GDP.
+The page also has a growth calculator (any year to any year; total, by
+category or by any of 150 individual departments, honoring the per-capita and
+inflation toggles), amounts/share-of-total toggles on the category charts,
+click-to-isolate trend lines from every legend and a spending-as-share-of-GDP
+view built on BEA county GDP. Department series are keyed by the Comptroller's
+stable three-digit agency codes and reconcile to every function subtotal in
+all three reports; the revenue chart carries the fiscal 2026-27 budget years
+grouped to match the audited bands and balancing to the budget's total.
 
 Fiscal years 2026 and 2027 are not audited and sit on the budget basis, which
 covers operations and debt service but not capital. Fiscal 2026 has closed but

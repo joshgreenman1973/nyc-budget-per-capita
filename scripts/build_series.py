@@ -171,6 +171,174 @@ def derive_omb_functions(cells):
     return code2fun
 
 
+AGENCY_CODE_RE = re.compile(r"\b(\d{3})\b(?=\s+[A-Z])")
+
+SOURCE_SPAN = {"acfr2005": (1996, 2005), "acfr2015": (2006, 2015),
+               "acfr2025": (2016, 2025)}
+
+
+def agency_series(cells):
+    """Spending per individual agency, FY2000-FY2025, keyed by agency code.
+
+    Codes are stable across the three reports even as agency names drift, so
+    each code becomes one continuous series. A row is an agency line when a
+    three-digit code is followed by a capitalised name that is not a subtotal
+    and not one of the "Miscellaneous--" payment lines whose stray page
+    numbers would otherwise read as codes. The guard against bad parses is
+    arithmetic: within every report, the agencies assigned to a function must
+    sum to that function's printed subtotal for every year, or the build
+    fails.
+    """
+    per_code = collections.defaultdict(dict)     # code -> {fy: thousands}
+    names = {}                                   # code -> (source, name)
+    problems = []
+
+    for src, (lo, hi) in SOURCE_SPAN.items():
+        rows = sorted(((order, label, vals) for (t, s_, order, label), vals
+                       in cells.items()
+                       if t == "gf_expenditures" and s_ == src),
+                      key=lambda r: r[0])
+
+        # Function assignment via the same ordered walk used for OMB codes,
+        # done per pagination half so interleaved halves cannot cross-flush.
+        halves = {}
+        for order, label, vals in rows:
+            halves.setdefault(hi in vals, []).append((order, label, vals))
+
+        fun_totals = collections.defaultdict(dict)   # fun -> {fy: total}
+        by_fun = collections.defaultdict(lambda: collections.defaultdict(int))
+        agency_rows = []
+        for _half, half_rows in halves.items():
+            pending_vals = []            # every component row since last total
+            for _order, label, vals in half_rows:
+                n = norm(label)
+                if n == "total expenditures":
+                    # Everything below is the transfers section, where the
+                    # debt-service code 099 appears on several distinct lines.
+                    break
+                fun = OMB_TOTAL_LABELS.get(n)
+                if fun:
+                    # The printed subtotal covers coded agencies AND the
+                    # section's non-coded "Miscellaneous--" payment lines, so
+                    # both accumulate into the check.
+                    for pv in pending_vals:
+                        for y, v in pv.items():
+                            by_fun[fun][y] += v
+                    pending_vals = []
+                    for y, v in vals.items():
+                        if y in fun_totals[fun]:
+                            if fun_totals[fun][y] != v:
+                                problems.append(f"{src} {fun} FY{y} subtotal "
+                                                f"conflict")
+                        else:
+                            fun_totals[fun][y] = v
+                    continue
+                if "total" in n.split():
+                    pending_vals = []    # a non-function subtotal closes nothing
+                    continue
+                m = AGENCY_CODE_RE.search(label)
+                code = m.group(1) if m else None
+                if code and label[m.end(1):].lstrip().startswith("Total"):
+                    code = None
+                # The Education section has no printed subtotal (it is a
+                # single agency), so its row must not sit in pending or it
+                # would flush into the next section's total, City University.
+                if code == "040":
+                    agency_rows.append((code, label, vals))
+                    continue
+                pending_vals.append(vals)
+                if "miscellaneous" in label.lower() or code is None:
+                    continue
+                agency_rows.append((code, label, vals))
+
+        for code, label, vals in agency_rows:
+            for y, v in vals.items():
+                if lo <= y <= hi:
+                    if y in per_code[code] and per_code[code][y] != v:
+                        problems.append(f"{src} agency {code} FY{y} "
+                                        f"conflicting values")
+                    per_code[code][y] = v
+            if code not in names or SOURCE_SPAN[names[code][0]][1] < hi:
+                # Prefer the newest report's wording for the display name.
+                nm = label[label.index(code) + 3:].strip(" .-—:")
+                nm = re.sub(r"\b\d{3}\b", " ", nm)      # stray page numbers
+                nm = re.sub(r"\s+", " ", nm).strip()
+                if nm:
+                    names[code] = (src, nm)
+
+        # Reconciliation: components must rebuild every function subtotal.
+        for fun, totals in fun_totals.items():
+            for y, printed in totals.items():
+                if not lo <= y <= hi:
+                    continue
+                got = by_fun[fun][y]
+                if abs(got - printed) > TOLERANCE:
+                    problems.append(f"{src} {fun} FY{y}: agencies {got:,} vs "
+                                    f"printed subtotal {printed:,} "
+                                    f"(diff {got - printed:,})")
+
+    if problems:
+        for p in problems[:25]:
+            print("AGENCY RECONCILIATION: " + p)
+        sys.exit(1)
+
+    out = {}
+    for code, vals in per_code.items():
+        keep = {y: v for y, v in vals.items() if y >= FIRST_FY}
+        if not keep or code not in names:
+            continue
+        out[code] = {"name": names[code][1], "v": keep}
+    return out
+
+
+def budget_year_revenue():
+    """FY2026/FY2027 revenue by source, in $ thousands, grouped to match the
+    audited chart's bands. The composition mirrors the ACFR's own groupings
+    (sales includes mortgage recording and cigarette, business is corporation
+    plus unincorporated plus utility), the other-taxes band is the rollup
+    minus the detailed lines so nothing unparsed is ever dropped, and the
+    whole thing must balance to the budget's net total."""
+    path = os.path.join(OUT, "omb_budget.json")
+    if not os.path.exists(path):
+        return None
+    omb = json.load(open(path))
+
+    def g(key, col):
+        return omb.get(key, {}).get(col, 0)
+
+    out = {}
+    for col, fy in (("fy2026_modified", 2026), ("fy2027_adopted", 2027)):
+        pit = g("tax_personal_income", col)
+        sales = (g("tax_general_sales", col) + g("tax_mortgage", col)
+                 + g("tax_cigarette", col))
+        biz = (g("tax_general_corp", col) + g("tax_unincorporated", col)
+               + g("tax_utility", col))
+        other_tax = (g("other_taxes", col) - pit - sales - biz
+                     + g("city_tax_programs", col))
+        rev = {
+            "property_tax": g("property_tax", col),
+            "personal_income_tax": pit,
+            "sales_tax": sales,
+            "business_taxes": biz,
+            "other_taxes": other_tax,
+            "state_aid": g("state_categorical", col),
+            "federal_aid": g("federal_categorical", col),
+            "other_revenues": (g("misc_revenues", col)
+                               + g("unrestricted_aid", col)
+                               + g("disallowances", col)
+                               + g("intra_city_revenue", col)
+                               + g("other_categorical", col)
+                               + g("capital_transfers", col)),
+        }
+        total = sum(rev.values())
+        target = omb["net_total_expense"][col]
+        if abs(total - target) > 5e6:
+            sys.exit(f"FATAL: budget revenue groups {total:,.0f} vs net total "
+                     f"{target:,.0f} for {col} (diff {total - target:,.0f})")
+        out[fy] = {k: round(v / 1000) for k, v in rev.items()}
+    return out
+
+
 def budget_year_categories(cells):
     """FY2026/FY2027 spending by function, in $ thousands, from the OMB
     agency table. Community boards default to general government, matching the
@@ -552,11 +720,15 @@ def build():
             {"fy": 2027, "basis": "OMB FY2027 adopted budget, June 2026",
              "col": "fy2027_adopted"},
         ]
+        payload["agencies"] = agency_series(cells)
         omb_cats = budget_year_categories(cells)
+        omb_rev = budget_year_revenue()
         for b in payload["budget_years"]:
             c = b.pop("col")
             if omb_cats and b["fy"] in omb_cats:
                 b["categories"] = omb_cats[b["fy"]]
+            if omb_rev and b["fy"] in omb_rev:
+                b["revenue_categories"] = omb_rev[b["fy"]]
             b["total_expense"] = omb["net_total_expense"][c]
             b["city_funds"] = omb["city_funds_and_capital_transfers"][c]
             b["state_aid"] = omb["state_categorical"][c]

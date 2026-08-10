@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The New York City ledger: what the city spends and where the money comes from</title>
 <meta name="description" content="Twenty-six years of audited New York City spending and revenue, by category, with toggles for population and inflation. Built from the Comptroller's annual financial reports.">
-<link rel="stylesheet" href="styles.css?v=20260809c">
+<link rel="stylesheet" href="styles.css?v=20260810a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128209;</text></svg>">
 </head>
 <body>
@@ -150,6 +150,12 @@
       <p class="hint" id="c4Hint"></p>
       <div class="tablewrap" id="c4Table" hidden></div>
     </figure>
+    <p class="note">The hatched fiscal 2026 and 2027 columns are the revenue side of the
+      adopted budget, grouped to match these bands: sales includes mortgage recording
+      and cigarette taxes, business is corporation plus unincorporated plus utility,
+      and the groups balance to the budget's printed total. Two mapping notes:
+      pass-through entity tax sits inside personal income there, and audit revenue and
+      new tax programs sit in other taxes.</p>
     <p class="note">Federal aid includes one-time surges &#8212; stimulus after the 2008
       financial crisis, Covid-19 relief from 2020 to 2023 &#8212; so swings in that band
       are often Washington's calendar, not the city's. This is General Fund revenue:
@@ -189,7 +195,9 @@
       toggles at the top of the page to switch the basis. Two-point growth is
       sensitive to the endpoints you pick: starting in a recession year or ending in
       a stimulus year can flatter or understate a trend, so try shifting each end a
-      year or two before drawing conclusions.</p>
+      year or two before drawing conclusions. Individual departments carry an extra
+      caution: functions move between agencies when government reorganizes, so a
+      department's long-run growth can reflect reshuffling as much as real change.</p>
     <p class="note">Source: <a href="https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/">Comptroller, annual comprehensive financial
       reports</a>.</p>
   </section>
@@ -386,6 +394,6 @@
 </footer>
 
 <div class="tooltip" id="tooltip" hidden></div>
-<script src="app.js?v=20260809c"></script>
+<script src="app.js?v=20260810a"></script>
 </body>
 </html>

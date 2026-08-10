@@ -40,12 +40,34 @@ WANT = {
     "other_categorical": r"^Other Categorical Grants$",
     "property_tax": r"^General Property Taxes$",
     "other_taxes": r"^Other Taxes$",
+    # Revenue detail, for the by-source budget years. Anything that fails to
+    # parse simply stays inside the other-taxes remainder, which is computed
+    # by subtraction from the rollup rather than by addition.
+    "tax_general_sales": r"^General Sales$",
+    "tax_personal_income": r"^Personal Income$",
+    "tax_general_corp": r"^General Corp$",
+    "tax_unincorporated": r"^Unincorporated Business$",
+    "tax_utility": r"^Utility$",
+    "tax_mortgage": r"^Mortgage Recording$",
+    "tax_cigarette": r"^Cigarette$",
+    "misc_revenues": r"^Miscellaneous Revenues$",
+    "unrestricted_aid": r"^Unrestricted Federal and State Aid$",
+    "disallowances": r"^Disallowances against Categorical Grants$",
+    "intra_city_revenue": r"^Less: Intra-City Revenue$",
+    "capital_transfers": r"^Transfers from Capital Budget$",
+    "city_tax_programs": r"^City Tax Programs$",
 }
+# Lines that can be blank in some columns without failing the run.
+OPTIONAL = {"tax_general_sales", "tax_personal_income", "tax_general_corp",
+            "tax_unincorporated", "tax_utility", "tax_mortgage",
+            "tax_cigarette", "city_tax_programs"}
 
-NUM = re.compile(r"\(?\$?-?[\d,]{4,}\)?")
+NUM = re.compile(r"\(?\$?-?[\d,]{4,}\)?|---")
 
 
 def parse_amount(tok):
+    if tok == "---":          # a blank column prints as dashes, meaning zero
+        return 0
     neg = tok.startswith("(") and tok.endswith(")")
     v = tok.strip("()").lstrip("$").replace(",", "")
     if not v.isdigit():
@@ -100,7 +122,7 @@ def run():
                 }
                 break
 
-    missing = [k for k in WANT if k not in found]
+    missing = [k for k in WANT if k not in found and k not in OPTIONAL]
     if missing:
         sys.exit(f"FATAL: could not read OMB summary lines: {missing}")
 

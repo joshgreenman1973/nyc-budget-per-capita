@@ -261,7 +261,8 @@ def extract_page(page, years):
     # to split one column into two apparent ones.
     plain = [w for w in nums if "(" not in w[4] and ")" not in w[4]]
     seeds = [w for w in plain if "," in w[4]]
-    if len(seeds) < len(years):
+    used_plain = len(seeds) < len(years)
+    if used_plain:
         # Fall back to every plain number, but drop tokens sitting far left of
         # the numeric block: printed page numbers live in the label margin and
         # would otherwise anchor a phantom column.
@@ -270,16 +271,27 @@ def extract_page(page, years):
             rightmost = max(w[2] for w in seeds)
             seeds = [w for w in seeds if rightmost - w[2] < 700]
     edges = [w[2] for w in seeds]
-    centers = grid_columns(edges, len(years)) or cluster_columns(edges, len(years))
-    if centers is None:
-        return []
-    # Guard: columns must be reasonably separated.
-    gaps = [b - a for a, b in zip(centers, centers[1:])]
-    if gaps and min(gaps) < 8:
-        return []
-
-    spacing = sorted(gaps)[len(gaps) // 2] if gaps else 75
-    left_edge = min(centers) - spacing * 0.9
+    centers = grid_columns(edges, len(years))
+    if centers is None and not used_plain:
+        # Clustering is only trustworthy on comma-formatted amounts; on pages
+        # of small comma-less figures (the community boards) stray codes and
+        # page numbers cluster into phantom columns that pass the gap test.
+        centers = cluster_columns(edges, len(years))
+    # Pages whose amounts are small enough to carry no thousands separators
+    # (the community-board pages) defeat both column fits. Rank order still
+    # works: a full row's last N numeric tokens are its N year columns. The
+    # build's function-subtotal reconciliation guards this path.
+    rank_only = centers is None
+    if not rank_only:
+        # Guard: columns must be reasonably separated.
+        gaps = [b - a for a, b in zip(centers, centers[1:])]
+        if gaps and min(gaps) < 8:
+            rank_only = True
+    if rank_only:
+        centers, left_edge = None, None
+    else:
+        spacing = sorted(gaps)[len(gaps) // 2] if gaps else 75
+        left_edge = min(centers) - spacing * 0.9
 
     # Group tokens into visual rows. Each table cell is its own text line in
     # the content stream, so PDF line structure cannot be used; cluster on the
@@ -302,12 +314,27 @@ def extract_page(page, years):
     pending_label = []
     for grp in groups:
         row = sorted(grp, key=lambda w: w[0])
-        cells = [w for w in row
-                 if w[0] > left_edge and (is_number(w[4]) or w[4] in ("—", "–"))]
-        label_parts = [w[4] for w in row if w[0] <= left_edge]
+        if rank_only:
+            numish = [w for w in row if is_number(w[4]) or w[4] in ("—", "–")]
+            if len(numish) < len(years):
+                cells = []
+                label_parts = [w[4] for w in row]
+            else:
+                cells = numish[-len(years):]
+                cut_x = cells[0][0]
+                label_parts = [w[4] for w in row if w[0] < cut_x]
+        else:
+            cells = [w for w in row
+                     if w[0] > left_edge and (is_number(w[4]) or w[4] in ("—", "–"))]
+            label_parts = [w[4] for w in row if w[0] <= left_edge]
 
         vals = {}
-        if len(cells) == len(years):
+        if rank_only and cells:
+            for k, w in enumerate(cells):
+                v = 0 if w[4] in ("—", "–") else parse_number(w[4])
+                if v is not None:
+                    vals[years[k]] = v
+        elif len(cells) == len(years):
             # Full row: map left-to-right by rank, which is immune to the
             # column drift caused by leading dollar signs.
             for k, w in enumerate(cells):

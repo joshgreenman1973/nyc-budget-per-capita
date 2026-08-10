@@ -147,18 +147,23 @@
     // basis nets out intra-city purchases and pools citywide costs (fringe
     // benefits, transit subsidies, judgments, reserves) in the Miscellaneous
     // budget, so the hatched bars are close but not line-for-line comparable.
-    if (kind === "operating") {
+    if (kind === "operating" || kind === "revenue") {
       var lastDef = DATA.years[DATA.years.length - 1].deflator;
-      out.note = "Unaudited, on the budget basis: intra-city purchases are " +
-        "netted out, and citywide costs such as transit subsidies, judgments " +
-        "and reserves sit in the benefits band.";
+      out.note = kind === "operating"
+        ? "Unaudited, on the budget basis: intra-city purchases are netted " +
+          "out, and citywide costs such as transit subsidies, judgments and " +
+          "reserves sit in the benefits band."
+        : "Unaudited, on the budget basis. Pass-through entity tax sits " +
+          "inside personal income here, and audit revenue and new tax " +
+          "programs sit in other taxes.";
       (DATA.budget_years || []).forEach(function (b) {
-        if (!b.categories) return;
+        var cats = kind === "operating" ? b.categories : b.revenue_categories;
+        if (!cats) return;
         var pseudo = { deflator: lastDef, population: b.population };
         var raw = groups.map(function (g) {
           var sum = 0;
           g[1].forEach(function (key) {
-            if (b.categories[key] !== undefined) sum += b.categories[key];
+            if (cats[key] !== undefined) sum += cats[key];
           });
           return sum;
         });
@@ -584,6 +589,10 @@
 
   function growthValue(measure, catName, r) {
     // Returns $ thousands for one audited year.
+    if (catName && catName.indexOf("agency:") === 0) {
+      var a = DATA.agencies[catName.slice(7)];
+      return (a && a.v[r.fy]) || 0;
+    }
     if (measure === "total") {
       return r.operating_total + r.debt_service + r.capital_total;
     }
@@ -617,11 +626,29 @@
     all.textContent = m === "total" ? "Everything" : "All categories";
     sel.appendChild(all);
     if (m !== "total") {
+      var og = document.createElement("optgroup");
+      og.label = "Functions";
       groupsFor(m).forEach(function (g) {
         var o = document.createElement("option");
         o.value = g[0]; o.textContent = g[0];
-        sel.appendChild(o);
+        og.appendChild(o);
       });
+      sel.appendChild(og);
+    }
+    if (m === "operating" && DATA.agencies) {
+      var og2 = document.createElement("optgroup");
+      og2.label = "Individual departments";
+      Object.keys(DATA.agencies)
+        .sort(function (a, b) {
+          return DATA.agencies[a].name.localeCompare(DATA.agencies[b].name);
+        })
+        .forEach(function (code) {
+          var o = document.createElement("option");
+          o.value = "agency:" + code;
+          o.textContent = DATA.agencies[code].name;
+          og2.appendChild(o);
+        });
+      sel.appendChild(og2);
     }
     sel.value = "__all";
     if (keep) {
@@ -658,6 +685,8 @@
     var yrs = y1 - y0;
     var ann = (Math.pow(v1 / v0, 1 / yrs) - 1) * 100;
     var what = m === "total" ? "Total spending"
+      : cat.indexOf("agency:") === 0
+        ? DATA.agencies[cat.slice(7)].name
       : cat === "__all"
         ? { operating: "Operating spending", capital: "Capital spending",
             revenue: "Revenue" }[m]
@@ -800,7 +829,8 @@
     document.getElementById("c4Title").textContent =
       "Revenue by source" + (c4.share ? ", share of the total" : "") +
       (c4.isolated ? ", isolated" : "") +
-      (state.perCapita && !c4.share ? ", per resident" : "");
+      (state.perCapita && !c4.share ? ", per resident" : "") +
+      ", fiscal 2000 to 2027";
     document.getElementById("c4Hint").textContent = c4.isolated
       ? "Showing " + c4.count + " of 8 sources as trend lines. Click others " +
         "in the legend to add them, or use \u201cshow all\u201d to reset."
@@ -869,7 +899,7 @@
     });
   }
 
-  fetch("data.json?v=20260809c")
+  fetch("data.json?v=20260810a")
     .then(function (r) {
       if (!r.ok) throw new Error("data.json " + r.status);
       return r.json();
